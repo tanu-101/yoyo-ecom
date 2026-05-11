@@ -27,4 +27,3 @@ def set_staff_permission(
         },
     )
     return permission
-

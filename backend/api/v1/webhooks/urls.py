@@ -7,4 +7,3 @@ app_name = "webhooks"
 urlpatterns = [
     path("stripe/", include("api.v1.webhooks.stripe.urls")),
 ]
-

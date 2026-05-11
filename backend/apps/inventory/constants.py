@@ -15,4 +15,3 @@ class StockReservationStatus(models.TextChoices):
     CONSUMED = "consumed", "Consumed"
     RELEASED = "released", "Released"
     EXPIRED = "expired", "Expired"
-

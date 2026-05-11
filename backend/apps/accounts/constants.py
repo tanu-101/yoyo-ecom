@@ -16,4 +16,3 @@ class StaffPermissionCode(models.TextChoices):
     RETURNS_VIEW = "returns.view", "View returns"
     SUPPORT_VIEW_CUSTOMERS = "support.view_customers", "View customers"
     INVENTORY_VIEW = "inventory.view", "View inventory"
-

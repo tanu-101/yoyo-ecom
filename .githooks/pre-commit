@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+export PRE_COMMIT_HOME="${PRE_COMMIT_HOME:-.pre-commit-cache}"
+
+if [ -x ".venv/Scripts/python.exe" ]; then
+  PYTHON=".venv/Scripts/python.exe"
+elif [ -x ".venv/bin/python" ]; then
+  PYTHON=".venv/bin/python"
+else
+  PYTHON="python"
+fi
+
+exec "$PYTHON" -m pre_commit run --hook-stage pre-commit "$@"

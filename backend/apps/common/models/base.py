@@ -34,4 +34,3 @@ class SoftDeleteModel(TimeStampedModel):
     def soft_delete(self) -> None:
         self.deleted_at = timezone.now()
         self.save(update_fields=["deleted_at", "updated_at"])
-

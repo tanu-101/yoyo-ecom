@@ -9,11 +9,19 @@ class UserAdmin(DjangoUserAdmin):
     ordering = ("email",)
     list_display = ("email", "role", "is_active", "is_staff", "date_joined")
     search_fields = ("email", "first_name", "last_name")
-    fieldsets = DjangoUserAdmin.fieldsets + (
-        ("E-Commerce Profile", {"fields": ("role", "phone", "is_email_verified", "deleted_at")}),
+    fieldsets = (
+        *(DjangoUserAdmin.fieldsets or ()),
+        (
+            "E-Commerce Profile",
+            {"fields": ("role", "phone", "is_email_verified", "deleted_at")},
+        ),
     )
-    add_fieldsets = DjangoUserAdmin.add_fieldsets + (
-        ("E-Commerce Profile", {"fields": ("email", "role")}),
+    add_fieldsets = (
+        *(DjangoUserAdmin.add_fieldsets or ()),
+        (
+            "E-Commerce Profile",
+            {"fields": ("email", "role")},
+        ),
     )
 
 
@@ -29,4 +37,3 @@ class AddressAdmin(admin.ModelAdmin):
     list_display = ("user", "full_name", "city", "country", "is_default")
     list_filter = ("country", "is_default")
     search_fields = ("user__email", "full_name", "city")
-

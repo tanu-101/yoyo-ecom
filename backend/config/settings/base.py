@@ -2,13 +2,22 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import dj_database_url
 from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+
+def env_bool(name: str, *, default: bool = False) -> bool:
+    value = str(config(name, default=str(default))).strip().lower()
+    if value in {"1", "true", "yes", "on"}:
+        return True
+    if value in {"0", "false", "no", "off", "release", "production"}:
+        return False
+    return default
+
+
 SECRET_KEY = config("SECRET_KEY", default="unsafe-local-secret")
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = env_bool("DEBUG", default=False)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv())
 
 DJANGO_APPS = [
@@ -80,10 +89,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default="postgresql://postgres:postgres@localhost:5432/ecommerce",
-        conn_max_age=600,
-    )
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
 
 AUTH_USER_MODEL = "accounts.User"

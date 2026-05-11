@@ -11,4 +11,3 @@ class ProductStatus(models.TextChoices):
 class VariantStatus(models.TextChoices):
     ACTIVE = "active", "Active"
     INACTIVE = "inactive", "Inactive"
-

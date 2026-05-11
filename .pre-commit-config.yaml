@@ -1,0 +1,26 @@
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: ./.venv/Scripts/python.exe -m black backend
+        language: system
+        pass_filenames: false
+
+      - id: ruff
+        name: ruff
+        entry: ./.venv/Scripts/python.exe -m ruff check backend --fix
+        language: system
+        pass_filenames: false
+
+      - id: mypy
+        name: mypy
+        entry: ./.venv/Scripts/python.exe -m mypy --config-file backend/pyproject.toml backend
+        language: system
+        pass_filenames: false
+
+      - id: pytest-smoke
+        name: pytest smoke
+        entry: ./.venv/Scripts/python.exe -m pytest backend/tests/test_health.py
+        language: system
+        pass_filenames: false

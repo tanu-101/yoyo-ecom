@@ -7,4 +7,3 @@ class TrackingStatus(models.TextChoices):
     OUT_FOR_DELIVERY = "out_for_delivery", "Out for delivery"
     DELIVERED = "delivered", "Delivered"
     EXCEPTION = "exception", "Exception"
-

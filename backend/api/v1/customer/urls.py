@@ -16,4 +16,3 @@ urlpatterns = [
     path("wishlist/", include("api.v1.customer.wishlist.urls")),
     path("notifications/", include("api.v1.customer.notifications.urls")),
 ]
-

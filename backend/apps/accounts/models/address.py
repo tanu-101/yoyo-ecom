@@ -7,7 +7,9 @@ from apps.common.models.base import SoftDeleteModel
 
 
 class Address(SoftDeleteModel):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="addresses")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="addresses"
+    )
     full_name = models.CharField(max_length=150)
     phone = models.CharField(max_length=32)
     line1 = models.CharField(max_length=255)
@@ -26,4 +28,3 @@ class Address(SoftDeleteModel):
 
     def __str__(self) -> str:
         return f"{self.full_name}, {self.city}"
-

@@ -16,4 +16,3 @@ class PaymentStatus(models.TextChoices):
     FAILED = "failed", "Failed"
     PARTIALLY_REFUNDED = "partially_refunded", "Partially refunded"
     REFUNDED = "refunded", "Refunded"
-

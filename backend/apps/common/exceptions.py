@@ -9,4 +9,3 @@ class DomainError(Exception):
 
 class BusinessRuleViolation(DomainError):
     default_code = "business_rule_violation"
-

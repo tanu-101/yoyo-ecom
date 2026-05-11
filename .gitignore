@@ -6,9 +6,11 @@ venv/
 __pycache__/
 *.py[cod]
 *$py.class
+*.egg-info/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.pre-commit-cache/
 htmlcov/
 .coverage
 .coverage.*
@@ -20,4 +22,3 @@ node_modules/
 .idea/
 .vscode/
 *.log
-

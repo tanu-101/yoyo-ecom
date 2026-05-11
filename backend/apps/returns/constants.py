@@ -26,4 +26,3 @@ class ReturnResolution(models.TextChoices):
     REFUND = "refund", "Refund"
     REPLACEMENT = "replacement", "Replacement"
     STORE_CREDIT = "store_credit", "Store credit"
-
