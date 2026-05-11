@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import dj_database_url
 from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -79,14 +80,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("POSTGRES_DB", default="ecommerce"),
-        "USER": config("POSTGRES_USER", default="postgres"),
-        "PASSWORD": config("POSTGRES_PASSWORD", default="postgres"),
-        "HOST": config("POSTGRES_HOST", default="localhost"),
-        "PORT": config("POSTGRES_PORT", default="5432"),
-    }
+    "default": dj_database_url.config(
+        default="postgresql://postgres:postgres@localhost:5432/ecommerce",
+        conn_max_age=600,
+    )
 }
 
 AUTH_USER_MODEL = "accounts.User"
@@ -128,4 +125,3 @@ SPECTACULAR_SETTINGS = {
 }
 
 CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="", cast=Csv())
-

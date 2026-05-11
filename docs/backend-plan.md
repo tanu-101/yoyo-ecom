@@ -63,18 +63,10 @@ backend/
 │   └── v1/
 │       ├── __init__.py
 │       ├── urls.py
-│       ├── accounts/
-│       ├── catalog/
-│       ├── inventory/
-│       ├── carts/
-│       ├── orders/
-│       ├── payments/
-│       ├── shipping/
-│       ├── returns/
-│       ├── reviews/
-│       ├── wishlist/
-│       ├── coupons/
-│       └── analytics/
+│       ├── public/
+│       ├── customer/
+│       ├── admin/
+│       └── webhooks/
 └── tests/
     ├── conftest.py
     ├── factories/
@@ -340,6 +332,61 @@ api/v1/
 ```
 
 Create `api/v2/` only when a breaking API change is needed.
+
+## API Surface Separation
+
+Separate API modules by audience and permission scope. Domain apps own business logic; API modules only expose that logic with the correct serializers, filters, and permissions.
+
+```txt
+api/v1/
+|-- public/
+|   |-- catalog/
+|   |-- reviews/
+|   `-- shipping/
+|-- customer/
+|   |-- auth/
+|   |-- profile/
+|   |-- addresses/
+|   |-- cart/
+|   |-- orders/
+|   |-- payments/
+|   |-- returns/
+|   |-- reviews/
+|   |-- wishlist/
+|   `-- notifications/
+|-- admin/
+|   |-- users/
+|   |-- staff/
+|   |-- catalog/
+|   |-- inventory/
+|   |-- orders/
+|   |-- payments/
+|   |-- shipping/
+|   |-- returns/
+|   |-- reviews/
+|   |-- coupons/
+|   |-- notifications/
+|   `-- analytics/
+`-- webhooks/
+    `-- stripe/
+```
+
+Route groups:
+
+```txt
+/api/v1/public/
+/api/v1/customer/
+/api/v1/admin/
+/api/v1/webhooks/
+```
+
+Permission rules:
+- Public APIs must explicitly allow anonymous access.
+- Customer APIs require authentication and customer ownership checks.
+- Admin APIs require admin access or staff access with explicit permission codes.
+- Webhook APIs use provider verification, not user authentication.
+
+This avoids mixing customer and admin behavior in the same view files.
 
 ## Implementation Sequence
 

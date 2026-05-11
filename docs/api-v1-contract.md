@@ -6,6 +6,21 @@
 /api/v1/
 ```
 
+## Route Groups
+
+```txt
+/api/v1/public/
+/api/v1/customer/
+/api/v1/admin/
+/api/v1/webhooks/
+```
+
+Use separate API modules by audience:
+- `public`: anonymous browsing APIs.
+- `customer`: authenticated customer self-service APIs.
+- `admin`: admin panel and staff-permission APIs.
+- `webhooks`: provider callbacks such as Stripe.
+
 ## Response Format
 
 Success response:
@@ -61,7 +76,7 @@ Error response:
 
 ## Auth
 
-### POST /auth/register/
+### POST /customer/auth/register/
 
 Create a customer account.
 
@@ -96,7 +111,7 @@ Errors:
 - weak password.
 - invalid email.
 
-### POST /auth/login/
+### POST /customer/auth/login/
 
 Auth: public.
 
@@ -125,7 +140,7 @@ Response:
 }
 ```
 
-### POST /auth/refresh/
+### POST /customer/auth/refresh/
 
 Auth: public.
 
@@ -137,7 +152,7 @@ Request:
 }
 ```
 
-### POST /auth/logout/
+### POST /customer/auth/logout/
 
 Auth: authenticated.
 
@@ -149,7 +164,7 @@ Request:
 }
 ```
 
-### GET /auth/me/
+### GET /customer/auth/me/
 
 Auth: authenticated.
 
@@ -170,7 +185,7 @@ Response:
 
 ## Users And Staff
 
-### GET /users/
+### GET /admin/users/
 
 List users.
 
@@ -186,19 +201,19 @@ page=1
 page_size=20
 ```
 
-### GET /users/{id}/
+### GET /admin/users/{id}/
 
 Auth:
 - admin can view any user.
 - customer can view self.
 
-### PATCH /users/{id}/
+### PATCH /admin/users/{id}/
 
 Auth:
 - admin can update allowed user fields.
 - customer can update own profile fields.
 
-### POST /staff/
+### POST /admin/staff/
 
 Create staff account.
 
@@ -215,7 +230,7 @@ Request:
 }
 ```
 
-### PATCH /staff/{id}/permissions/
+### PATCH /admin/staff/{id}/permissions/
 
 Auth: admin.
 
@@ -232,13 +247,13 @@ Request:
 
 ## Addresses
 
-### GET /addresses/
+### GET /customer/addresses/
 
 Auth: customer.
 
 Returns current user's saved addresses.
 
-### POST /addresses/
+### POST /customer/addresses/
 
 Auth: customer.
 
@@ -258,11 +273,11 @@ Request:
 }
 ```
 
-### PATCH /addresses/{id}/
+### PATCH /customer/addresses/{id}/
 
 Auth: owner.
 
-### DELETE /addresses/{id}/
+### DELETE /customer/addresses/{id}/
 
 Auth: owner.
 
@@ -270,31 +285,31 @@ Soft delete.
 
 ## Catalog
 
-### GET /categories/
+### GET /public/catalog/categories/
 
 Auth: public.
 
 Returns active categories.
 
-### POST /categories/
+### POST /admin/catalog/categories/
 
 Auth: admin.
 
 Staff: requires `products.create`.
 
-### PATCH /categories/{id}/
+### PATCH /admin/catalog/categories/{id}/
 
 Auth: admin.
 
 Staff: requires `products.update`.
 
-### DELETE /categories/{id}/
+### DELETE /admin/catalog/categories/{id}/
 
 Auth: admin.
 
 Soft delete.
 
-### GET /products/
+### GET /public/catalog/products/
 
 Auth: public.
 
@@ -317,7 +332,7 @@ Response includes:
 - active variants summary.
 - calculated stock availability.
 
-### POST /products/
+### POST /admin/catalog/products/
 
 Auth: admin.
 
@@ -338,23 +353,23 @@ Request:
 }
 ```
 
-### GET /products/{id}/
+### GET /public/catalog/products/{id}/
 
 Auth: public.
 
-### PATCH /products/{id}/
+### PATCH /admin/catalog/products/{id}/
 
 Auth: admin.
 
 Staff: requires `products.update`.
 
-### DELETE /products/{id}/
+### DELETE /admin/catalog/products/{id}/
 
 Auth: admin.
 
 Soft delete or archive.
 
-### POST /products/{id}/variants/
+### POST /admin/catalog/products/{id}/variants/
 
 Auth: admin.
 
@@ -376,7 +391,7 @@ Request:
 }
 ```
 
-### PATCH /variants/{id}/
+### PATCH /admin/catalog/variants/{id}/
 
 Auth: admin.
 
@@ -388,7 +403,7 @@ Note:
 
 ## Inventory
 
-### GET /inventory/variants/
+### GET /admin/inventory/variants/
 
 Auth: admin.
 
@@ -403,7 +418,7 @@ page=1
 page_size=20
 ```
 
-### POST /inventory/adjustments/
+### POST /admin/inventory/adjustments/
 
 Auth: admin.
 
@@ -423,7 +438,7 @@ Rules:
 - Resulting stock cannot be below zero.
 - Creates `InventoryTransaction`.
 
-### GET /inventory/transactions/
+### GET /admin/inventory/transactions/
 
 Auth: admin.
 
@@ -431,11 +446,11 @@ Staff: requires `inventory.view`.
 
 ## Cart
 
-### GET /cart/
+### GET /customer/cart/
 
 Auth: customer.
 
-### POST /cart/items/
+### POST /customer/cart/items/
 
 Auth: customer.
 
@@ -453,7 +468,7 @@ Errors:
 - variant inactive.
 - insufficient stock.
 
-### PATCH /cart/items/{id}/
+### PATCH /customer/cart/items/{id}/
 
 Auth: owner.
 
@@ -465,11 +480,11 @@ Request:
 }
 ```
 
-### DELETE /cart/items/{id}/
+### DELETE /customer/cart/items/{id}/
 
 Auth: owner.
 
-### POST /cart/apply-coupon/
+### POST /customer/cart/apply-coupon/
 
 Auth: customer.
 
@@ -481,13 +496,13 @@ Request:
 }
 ```
 
-### DELETE /cart/coupon/
+### DELETE /customer/cart/coupon/
 
 Auth: customer.
 
 ## Orders
 
-### POST /orders/checkout/
+### POST /customer/orders/checkout/
 
 Create an order from the current cart.
 
@@ -525,12 +540,11 @@ Rules:
 - Deduct or reserve stock based on final stock policy.
 - Snapshot product, variant, price, and address.
 
-### GET /orders/
+### GET /customer/orders/
 
-Auth:
-- customer sees own orders.
-- admin sees all.
-- staff requires `orders.view`.
+Auth: customer.
+
+Returns the authenticated customer's own orders.
 
 Query:
 
@@ -544,14 +558,27 @@ page=1
 page_size=20
 ```
 
-### GET /orders/{id}/
+### GET /customer/orders/{id}/
+
+Auth: owner.
+
+Returns one order owned by the authenticated customer.
+
+### GET /admin/orders/
 
 Auth:
-- owner.
 - admin.
-- staff with `orders.view`.
+- staff requires `orders.view`.
 
-### POST /orders/{id}/cancel/
+Returns all orders for the admin panel.
+
+### GET /admin/orders/{id}/
+
+Auth:
+- admin.
+- staff requires `orders.view`.
+
+### POST /customer/orders/{id}/cancel/
 
 Auth:
 - customer can cancel own order before shipped.
@@ -570,7 +597,7 @@ Rules:
 - Update status history.
 - Refund if already paid and policy allows.
 
-### POST /orders/{id}/status/
+### POST /admin/orders/{id}/status/
 
 Auth:
 - admin.
@@ -598,7 +625,7 @@ processing -> cancelled
 
 ## Payments
 
-### POST /payments/create-intent/
+### POST /customer/payments/create-intent/
 
 Auth: customer.
 
@@ -626,7 +653,7 @@ Rules:
 - Order must be `pending_payment`.
 - Amount must match order total.
 
-### POST /payments/webhooks/stripe/
+### POST /webhooks/stripe/
 
 Auth: Stripe signature.
 
@@ -637,13 +664,17 @@ Rules:
 - On payment success, mark payment succeeded and order placed/paid.
 - On payment failure, mark payment failed.
 
-### GET /payments/
+### GET /customer/payments/
 
-Auth:
-- admin.
-- customer sees own payments.
+Auth: customer.
 
-### POST /payments/{id}/refund/
+Returns the authenticated customer's own payments.
+
+### GET /admin/payments/
+
+Auth: admin.
+
+### POST /admin/payments/{id}/refund/
 
 Auth: admin.
 
@@ -658,13 +689,13 @@ Request:
 
 ## Shipping
 
-### GET /shipping/methods/
+### GET /public/shipping/methods/
 
 Auth: public.
 
 Returns active shipping methods.
 
-### POST /orders/{id}/tracking/
+### POST /admin/orders/{id}/tracking/
 
 Auth:
 - admin.
@@ -681,7 +712,7 @@ Request:
 }
 ```
 
-### PATCH /orders/{id}/tracking/
+### PATCH /admin/orders/{id}/tracking/
 
 Auth:
 - admin.
@@ -689,7 +720,7 @@ Auth:
 
 ## Returns
 
-### POST /returns/
+### POST /customer/returns/
 
 Create a return request.
 
@@ -720,21 +751,29 @@ Rules:
 - Must be inside return window.
 - Quantity cannot exceed purchased quantity minus already returned quantity.
 
-### GET /returns/
+### GET /customer/returns/
+
+Auth: customer.
+
+Returns the authenticated customer's own return requests.
+
+### GET /customer/returns/{id}/
+
+Auth: owner.
+
+### GET /admin/returns/
 
 Auth:
-- customer sees own.
-- admin sees all.
+- admin.
 - staff requires `returns.view`.
 
-### GET /returns/{id}/
+### GET /admin/returns/{id}/
 
 Auth:
-- owner.
 - admin.
-- staff with `returns.view`.
+- staff requires `returns.view`.
 
-### POST /returns/{id}/approve/
+### POST /admin/returns/{id}/approve/
 
 Auth: admin.
 
@@ -748,7 +787,7 @@ Request:
 }
 ```
 
-### POST /returns/{id}/reject/
+### POST /admin/returns/{id}/reject/
 
 Auth: admin.
 
@@ -760,11 +799,11 @@ Request:
 }
 ```
 
-### POST /returns/{id}/mark-received/
+### POST /admin/returns/{id}/mark-received/
 
 Auth: admin.
 
-### POST /returns/{id}/process/
+### POST /admin/returns/{id}/process/
 
 Auth: admin.
 
@@ -775,13 +814,13 @@ Rules:
 
 ## Reviews
 
-### GET /products/{id}/reviews/
+### GET /public/reviews/products/{id}/
 
 Auth: public.
 
 Shows approved reviews.
 
-### POST /reviews/
+### POST /customer/reviews/
 
 Auth: customer.
 
@@ -802,25 +841,25 @@ Rules:
 - Order must be delivered.
 - One review per order item.
 
-### PATCH /reviews/{id}/
+### PATCH /customer/reviews/{id}/
 
 Auth: review owner.
 
-### POST /reviews/{id}/approve/
+### POST /admin/reviews/{id}/approve/
 
 Auth: admin.
 
-### POST /reviews/{id}/reject/
+### POST /admin/reviews/{id}/reject/
 
 Auth: admin.
 
 ## Wishlist
 
-### GET /wishlist/
+### GET /customer/wishlist/
 
 Auth: customer.
 
-### POST /wishlist/
+### POST /customer/wishlist/
 
 Auth: customer.
 
@@ -834,11 +873,11 @@ Request:
 }
 ```
 
-### DELETE /wishlist/{id}/
+### DELETE /customer/wishlist/{id}/
 
 Auth: owner.
 
-### POST /wishlist/{id}/move-to-cart/
+### POST /customer/wishlist/{id}/move-to-cart/
 
 Auth: owner.
 
@@ -852,11 +891,11 @@ Request:
 
 ## Coupons
 
-### GET /coupons/
+### GET /admin/coupons/
 
 Auth: admin.
 
-### POST /coupons/
+### POST /admin/coupons/
 
 Auth: admin.
 
@@ -877,11 +916,11 @@ Request:
 }
 ```
 
-### PATCH /coupons/{id}/
+### PATCH /admin/coupons/{id}/
 
 Auth: admin.
 
-### DELETE /coupons/{id}/
+### DELETE /admin/coupons/{id}/
 
 Auth: admin.
 
@@ -889,11 +928,11 @@ Soft delete or deactivate.
 
 ## Notifications
 
-### GET /notification-preferences/
+### GET /customer/notifications/preferences/
 
 Auth: authenticated.
 
-### PATCH /notification-preferences/
+### PATCH /customer/notifications/preferences/
 
 Auth: authenticated.
 
@@ -908,7 +947,7 @@ Request:
 }
 ```
 
-### GET /notifications/
+### GET /customer/notifications/
 
 Auth: authenticated.
 
@@ -916,7 +955,7 @@ Returns user's in-app notifications.
 
 ## Analytics
 
-### GET /analytics/summary/
+### GET /admin/analytics/summary/
 
 Auth: admin.
 
@@ -933,7 +972,7 @@ Response:
 }
 ```
 
-### GET /analytics/sales/
+### GET /admin/analytics/sales/
 
 Auth: admin.
 
@@ -945,11 +984,11 @@ date_to=
 group_by=day|week|month
 ```
 
-### GET /analytics/products/top/
+### GET /admin/analytics/products/top/
 
 Auth: admin.
 
-### GET /analytics/returns/
+### GET /admin/analytics/returns/
 
 Auth: admin.
 

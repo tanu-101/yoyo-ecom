@@ -7,6 +7,7 @@ from apps.accounts.constants import UserRole
 
 
 class User(AbstractUser):
+    username = models.CharField(max_length=150, unique=True, null=True, blank=True)
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=20, choices=UserRole.choices, default=UserRole.CUSTOMER)
     phone = models.CharField(max_length=32, blank=True)
@@ -16,7 +17,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username"]
+    REQUIRED_FIELDS: list[str] = []
 
     class Meta:
         indexes = [
@@ -35,4 +36,3 @@ class User(AbstractUser):
     @property
     def is_customer_role(self) -> bool:
         return self.role == UserRole.CUSTOMER
-
