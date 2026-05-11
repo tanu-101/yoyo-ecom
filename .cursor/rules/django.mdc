@@ -1,0 +1,13 @@
+---
+description: Rules for Django models, services, and selectors.
+globs: backend/apps/**/*.py
+---
+# Django Backend Rules
+
+- **Base Models**: Inherit from `apps.common.models.base` (`UUIDModel`, `TimeStampedModel`, `SoftDeleteModel`).
+- **Service/Selector Split**:
+    - `services/`: Business logic and write operations.
+    - `selectors/`: Read-only queries.
+- **Thin Views**: Views must delegate to services and selectors.
+- **Type Hints**: Use `from __future__ import annotations` and strict typing for all methods.
+- **Migrations**: Always provide a name using `--name`.

@@ -7,22 +7,22 @@ from django.utils import timezone
 
 
 class UUIDModel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     class Meta:
         abstract = True
 
 
 class TimeStampedModel(UUIDModel):
-    created_at = models.DateTimeField(default=timezone.now, editable=False)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at: models.DateTimeField = models.DateTimeField(default=timezone.now, editable=False)
+    updated_at: models.DateTimeField = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
 
 
 class SoftDeleteModel(TimeStampedModel):
-    deleted_at = models.DateTimeField(null=True, blank=True)
+    deleted_at: models.DateTimeField | None = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         abstract = True

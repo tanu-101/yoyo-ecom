@@ -1,0 +1,11 @@
+---
+description: Rules for writing and running tests.
+globs: backend/apps/**/tests/*.py, backend/tests/*.py
+---
+# Testing Rules
+
+- **Framework**: Use `pytest` with `pytest-django`.
+- **Factories**: Use `factory_boy` in `apps/<name>/factories.py`. Avoid manual creation in tests.
+- **Coverage**: Maintain >80% coverage for new logic.
+- **Security**: Always include tests for unauthorized access and invalid tokens.
+- **Clean DB**: Use `@pytest.mark.django_db` for database access.

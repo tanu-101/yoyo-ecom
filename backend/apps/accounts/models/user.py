@@ -6,17 +6,18 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from apps.accounts.constants import UserRole
+from apps.common.models.base import SoftDeleteModel
 
 
-class User(AbstractUser):
-    username = models.CharField(max_length=150, blank=True, default="")
-    email = models.EmailField(unique=True)
-    role = models.CharField(max_length=20, choices=UserRole.choices, default=UserRole.CUSTOMER)
-    phone = models.CharField(max_length=32, blank=True)
-    profile_picture = models.URLField(blank=True)
-    is_email_verified = models.BooleanField(default=False)
-    deleted_at = models.DateTimeField(null=True, blank=True)
-    updated_at = models.DateTimeField(auto_now=True)
+class User(AbstractUser, SoftDeleteModel):
+    username: models.CharField = models.CharField(max_length=150, blank=True, default="")
+    email: models.EmailField = models.EmailField(unique=True)
+    role: models.CharField = models.CharField(
+        max_length=20, choices=UserRole.choices, default=UserRole.CUSTOMER
+    )
+    phone: models.CharField = models.CharField(max_length=32, blank=True)
+    profile_picture: models.URLField = models.URLField(blank=True)
+    is_email_verified: models.BooleanField = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS: ClassVar[list[str]] = []

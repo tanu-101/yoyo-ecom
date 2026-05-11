@@ -1,0 +1,17 @@
+# Cursor Rules - E-Commerce Management System
+
+<links>
+- Core: [.agent/instructions/core.md](.agent/instructions/core.md)
+- Backend: [.agent/instructions/backend.md](.agent/instructions/backend.md)
+- API: [.agent/instructions/api.md](.agent/instructions/api.md)
+</links>
+
+<rule_files>
+- Specific rules located in `.cursor/rules/`
+</rule_files>
+
+<standards>
+- Always inherit from base models in `apps/common/models/base.py`.
+- Keep views thin; delegate logic to services/selectors.
+- Line length: 100.
+</standards>
