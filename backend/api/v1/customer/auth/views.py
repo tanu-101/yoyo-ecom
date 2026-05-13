@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from django.core.exceptions import ValidationError as DjangoValidationError
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -50,6 +52,41 @@ def _user_data(user) -> dict:
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        request=RegisterSerializer,
+        responses={201: OpenApiTypes.OBJECT},
+        examples=[
+            OpenApiExample(
+                "Register request",
+                value={
+                    "email": "customer@example.com",
+                    "password": "StrongPass123",
+                    "first_name": "Jane",
+                    "last_name": "Doe",
+                    "phone": "+15550000000",
+                },
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Register response",
+                value={
+                    "data": {
+                        "id": "11111111-1111-1111-1111-111111111111",
+                        "email": "customer@example.com",
+                        "first_name": "Jane",
+                        "last_name": "Doe",
+                        "role": "customer",
+                        "phone": "+15550000000",
+                        "profile_picture": "",
+                        "is_email_verified": False,
+                        "permissions": [],
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -66,6 +103,39 @@ class RegisterView(APIView):
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        request=LoginSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Login request",
+                value={"email": "customer@example.com", "password": "StrongPass123"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Login response",
+                value={
+                    "data": {
+                        "access": "eyJhbGciOiJIUzI1NiIs...",
+                        "refresh": "eyJhbGciOiJIUzI1NiIs...",
+                        "user": {
+                            "id": "11111111-1111-1111-1111-111111111111",
+                            "email": "customer@example.com",
+                            "first_name": "Jane",
+                            "last_name": "Doe",
+                            "role": "customer",
+                            "phone": "+15550000000",
+                            "profile_picture": "",
+                            "is_email_verified": False,
+                            "permissions": [],
+                        },
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -87,6 +157,22 @@ class LoginView(APIView):
 class RefreshView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        request=RefreshSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Refresh request",
+                value={"refresh": "eyJhbGciOiJIUzI1NiIs..."},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Refresh response",
+                value={"data": {"access": "eyJhbGciOiJIUzI1NiIs..."}, "message": "Success"},
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         serializer = RefreshSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -100,6 +186,17 @@ class RefreshView(APIView):
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=LogoutSerializer,
+        responses={204: None},
+        examples=[
+            OpenApiExample(
+                "Logout request",
+                value={"refresh": "eyJhbGciOiJIUzI1NiIs..."},
+                request_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         serializer = LogoutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -113,6 +210,29 @@ class LogoutView(APIView):
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Me response",
+                value={
+                    "data": {
+                        "id": "11111111-1111-1111-1111-111111111111",
+                        "email": "customer@example.com",
+                        "first_name": "Jane",
+                        "last_name": "Doe",
+                        "role": "customer",
+                        "phone": "+15550000000",
+                        "profile_picture": "",
+                        "is_email_verified": True,
+                        "permissions": [],
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def get(self, request) -> Response:
         return Response({"data": _user_data(request.user), "message": "Success"})
 
@@ -120,6 +240,16 @@ class MeView(APIView):
 class RequestEmailVerificationView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Request email verification response",
+                value={"data": {}, "message": "Verification code sent."},
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         authentication.request_email_verification(request.user)
         return Response({"data": {}, "message": "Verification code sent."})
@@ -128,6 +258,35 @@ class RequestEmailVerificationView(APIView):
 class VerifyEmailView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=VerifyEmailSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Verify email request",
+                value={"code": "123456"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Verify email response",
+                value={
+                    "data": {
+                        "id": "11111111-1111-1111-1111-111111111111",
+                        "email": "customer@example.com",
+                        "first_name": "Jane",
+                        "last_name": "Doe",
+                        "role": "customer",
+                        "phone": "+15550000000",
+                        "profile_picture": "",
+                        "is_email_verified": True,
+                        "permissions": [],
+                    },
+                    "message": "Email verified.",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         serializer = VerifyEmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -141,6 +300,22 @@ class VerifyEmailView(APIView):
 class ForgotPasswordView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        request=ForgotPasswordSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Forgot password request",
+                value={"email": "customer@example.com"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Forgot password response",
+                value={"data": {}, "message": "If the email exists, a reset code was sent."},
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         serializer = ForgotPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -151,6 +326,26 @@ class ForgotPasswordView(APIView):
 class ResetPasswordView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        request=ResetPasswordSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Reset password request",
+                value={
+                    "email": "customer@example.com",
+                    "code": "123456",
+                    "new_password": "NewStrongPass123",
+                },
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Reset password response",
+                value={"data": {}, "message": "Password reset successful."},
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

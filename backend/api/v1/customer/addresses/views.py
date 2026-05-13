@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -23,10 +25,76 @@ def _address_data(address) -> dict:
 class AddressListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Address list response",
+                value={
+                    "data": [
+                        {
+                            "id": "22222222-2222-2222-2222-222222222222",
+                            "full_name": "Jane Doe",
+                            "phone": "+15550000000",
+                            "line1": "123 Market Street",
+                            "line2": "Suite 10",
+                            "city": "San Francisco",
+                            "state": "CA",
+                            "postal_code": "94105",
+                            "country": "US",
+                            "is_default": True,
+                        }
+                    ],
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def get(self, request) -> Response:
         serializer = AddressSerializer(addresses_for_user(request.user), many=True)
         return Response({"data": serializer.data, "message": "Success"})
 
+    @extend_schema(
+        request=AddressSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Address create request",
+                value={
+                    "full_name": "Jane Doe",
+                    "phone": "+15550000000",
+                    "line1": "123 Market Street",
+                    "line2": "Suite 10",
+                    "city": "San Francisco",
+                    "state": "CA",
+                    "postal_code": "94105",
+                    "country": "US",
+                    "is_default": True,
+                },
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Address create response",
+                value={
+                    "data": {
+                        "id": "22222222-2222-2222-2222-222222222222",
+                        "full_name": "Jane Doe",
+                        "phone": "+15550000000",
+                        "line1": "123 Market Street",
+                        "line2": "Suite 10",
+                        "city": "San Francisco",
+                        "state": "CA",
+                        "postal_code": "94105",
+                        "country": "US",
+                        "is_default": True,
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         serializer = AddressSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -46,12 +114,66 @@ class AddressDetailView(APIView):
             return None
         return address
 
+    @extend_schema(
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Address detail response",
+                value={
+                    "data": {
+                        "id": "22222222-2222-2222-2222-222222222222",
+                        "full_name": "Jane Doe",
+                        "phone": "+15550000000",
+                        "line1": "123 Market Street",
+                        "line2": "Suite 10",
+                        "city": "San Francisco",
+                        "state": "CA",
+                        "postal_code": "94105",
+                        "country": "US",
+                        "is_default": True,
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def get(self, request, address_id) -> Response:
         address = self._get_address(request, address_id)
         if address is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response({"data": _address_data(address), "message": "Success"})
 
+    @extend_schema(
+        request=AddressUpdateSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Address update request",
+                value={"city": "Oakland", "postal_code": "94607"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Address update response",
+                value={
+                    "data": {
+                        "id": "22222222-2222-2222-2222-222222222222",
+                        "full_name": "Jane Doe",
+                        "phone": "+15550000000",
+                        "line1": "123 Market Street",
+                        "line2": "Suite 10",
+                        "city": "Oakland",
+                        "state": "CA",
+                        "postal_code": "94607",
+                        "country": "US",
+                        "is_default": True,
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def patch(self, request, address_id) -> Response:
         address = self._get_address(request, address_id)
         if address is None:
@@ -61,6 +183,7 @@ class AddressDetailView(APIView):
         address = update_address(user=request.user, address=address, data=serializer.validated_data)
         return Response({"data": _address_data(address), "message": "Success"})
 
+    @extend_schema(responses={204: None})
     def delete(self, request, address_id) -> Response:
         address = self._get_address(request, address_id)
         if address is None:
@@ -72,6 +195,30 @@ class AddressDetailView(APIView):
 class SetDefaultAddressView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Set default address response",
+                value={
+                    "data": {
+                        "id": "22222222-2222-2222-2222-222222222222",
+                        "full_name": "Jane Doe",
+                        "phone": "+15550000000",
+                        "line1": "123 Market Street",
+                        "line2": "Suite 10",
+                        "city": "San Francisco",
+                        "state": "CA",
+                        "postal_code": "94105",
+                        "country": "US",
+                        "is_default": True,
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request, address_id) -> Response:
         address = get_address_for_user(request.user, address_id)
         if address is None:

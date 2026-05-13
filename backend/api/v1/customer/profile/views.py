@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from django.core.exceptions import ValidationError as DjangoValidationError
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,9 +18,61 @@ from .serializers import ChangePasswordSerializer, ProfileImageSerializer, Profi
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Profile response",
+                value={
+                    "data": {
+                        "id": "11111111-1111-1111-1111-111111111111",
+                        "email": "customer@example.com",
+                        "first_name": "Jane",
+                        "last_name": "Doe",
+                        "role": "customer",
+                        "phone": "+15550000000",
+                        "profile_picture": "",
+                        "is_email_verified": True,
+                        "permissions": [],
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def get(self, request) -> Response:
         return Response({"data": _user_data(request.user), "message": "Success"})
 
+    @extend_schema(
+        request=ProfileUpdateSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Profile update request",
+                value={"first_name": "Jane", "last_name": "Smith"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Profile update response",
+                value={
+                    "data": {
+                        "id": "11111111-1111-1111-1111-111111111111",
+                        "email": "customer@example.com",
+                        "first_name": "Jane",
+                        "last_name": "Smith",
+                        "role": "customer",
+                        "phone": "+15550000000",
+                        "profile_picture": "",
+                        "is_email_verified": True,
+                        "permissions": [],
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def patch(self, request) -> Response:
         serializer = ProfileUpdateSerializer(data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -29,6 +83,35 @@ class ProfileView(APIView):
 class ProfileImageView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=ProfileImageSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Profile image request",
+                value={"profile_picture": "https://cdn.example.com/profiles/jane.png"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Profile image response",
+                value={
+                    "data": {
+                        "id": "11111111-1111-1111-1111-111111111111",
+                        "email": "customer@example.com",
+                        "first_name": "Jane",
+                        "last_name": "Doe",
+                        "role": "customer",
+                        "phone": "+15550000000",
+                        "profile_picture": "https://cdn.example.com/profiles/jane.png",
+                        "is_email_verified": True,
+                        "permissions": [],
+                    },
+                    "message": "Success",
+                },
+                response_only=True,
+            ),
+        ],
+    )
     def patch(self, request) -> Response:
         serializer = ProfileImageSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -42,6 +125,22 @@ class ProfileImageView(APIView):
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=ChangePasswordSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Change password request",
+                value={"old_password": "OldStrongPass123", "new_password": "NewStrongPass123"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Change password response",
+                value={"data": {}, "message": "Password changed."},
+                response_only=True,
+            ),
+        ],
+    )
     def post(self, request) -> Response:
         serializer = ChangePasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
