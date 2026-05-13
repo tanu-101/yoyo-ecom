@@ -1,6 +1,7 @@
 # Claude Code Instructions - E-Commerce Management System
 
 <links>
+- Agents: [AGENTS.md](AGENTS.md)
 - Core Rules: [.agent/instructions/core.md](.agent/instructions/core.md)
 - Backend Patterns: [.agent/instructions/backend.md](.agent/instructions/backend.md)
 - API Specs: [.agent/instructions/api.md](.agent/instructions/api.md)

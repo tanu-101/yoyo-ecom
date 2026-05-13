@@ -27,4 +27,11 @@ Each app follows strict directory partitioning:
 - Naming: CamelCase for classes, snake_case for functions/variables.
 - Imports: Standard -> Third Party -> Django -> Local Apps.
 </standards>
+
+<engineering_principles>
+- DRY: Reuse common models, exceptions, pagination, permissions, and response helpers.
+- SOLID: Keep each module focused; services orchestrate workflows, selectors query data.
+- KISS: Prefer explicit service functions/classes over generic frameworks.
+- YAGNI: Do not add workers, event buses, microservices, or API v2 until required.
+</engineering_principles>
 </root>

@@ -5,7 +5,11 @@ globs: backend/apps/**/tests/*.py, backend/tests/*.py
 # Testing Rules
 
 - **Framework**: Use `pytest` with `pytest-django`.
-- **Factories**: Use `factory_boy` in `apps/<name>/factories.py`. Avoid manual creation in tests.
+- **Factories**: Use `factory_boy` in `apps/<name>/factories.py`; avoid manual creation when a factory exists.
+- **Fixtures**: Put shared fixtures in `backend/conftest.py`; keep app-specific helpers in `apps/<name>/tests/`.
+- **Service Tests**: Unit-test services for business rules, transactions, and validation.
+- **Flow Tests**: Add end-to-end tests for critical user/business journeys.
+- **Seed Data**: Seed commands must be idempotent, configurable, and tested with `call_command`.
 - **Coverage**: Maintain >80% coverage for new logic.
 - **Security**: Always include tests for unauthorized access and invalid tokens.
 - **Clean DB**: Use `@pytest.mark.django_db` for database access.

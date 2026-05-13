@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from decouple import Csv, config
 
@@ -19,7 +19,10 @@ def env_bool(name: str, *, default: bool = False) -> bool:
 
 SECRET_KEY = config("SECRET_KEY", default="unsafe-local-secret")
 DEBUG = env_bool("DEBUG", default=False)
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv())
+ALLOWED_HOSTS: list[str] = cast(
+    list[str],
+    config("ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv()),
+)
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -36,6 +39,7 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 LOCAL_APPS = [
@@ -188,7 +192,10 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
-CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="", cast=Csv())
+CORS_ALLOWED_ORIGINS: list[str] = cast(
+    list[str],
+    config("CORS_ALLOWED_ORIGINS", default="", cast=Csv()),
+)
 
 # Email configuration
 EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")

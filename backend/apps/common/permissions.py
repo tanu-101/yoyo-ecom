@@ -6,7 +6,7 @@ from rest_framework.permissions import BasePermission
 class IsAdmin(BasePermission):
     def has_permission(self, request, view) -> bool:
         user = request.user
-        return bool(user and user.is_authenticated and user.role == "admin")
+        return bool(user and user.is_authenticated and (user.is_superuser or user.role == "admin"))
 
 
 class IsCustomer(BasePermission):
@@ -23,7 +23,7 @@ class IsAdminOrStaffWithPermission(BasePermission):
         if not user or not user.is_authenticated:
             return False
 
-        if user.role == "admin":
+        if user.is_superuser or user.role == "admin":
             return True
 
         required_permission = getattr(view, "required_staff_permission", self.required_permission)
@@ -49,7 +49,7 @@ class IsOwnerOrAdmin(BasePermission):
     owner_field = "user"
 
     def has_object_permission(self, request, view, obj) -> bool:
-        if request.user.role == "admin":
+        if request.user.is_superuser or request.user.role == "admin":
             return True
 
         owner_field = getattr(view, "owner_field", self.owner_field)

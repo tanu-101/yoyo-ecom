@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 
-from .models import Address, StaffPermission, User
+from .models import Address, StaffPermission, User, UserOTP
 
 
 @admin.register(User)
@@ -37,3 +37,11 @@ class AddressAdmin(admin.ModelAdmin):
     list_display = ("user", "full_name", "city", "country", "is_default")
     list_filter = ("country", "is_default")
     search_fields = ("user__email", "full_name", "city")
+
+
+@admin.register(UserOTP)
+class UserOTPAdmin(admin.ModelAdmin):
+    list_display = ("user", "purpose", "expires_at", "consumed_at")
+    list_filter = ("purpose", "consumed_at")
+    search_fields = ("user__email",)
+    readonly_fields = ("code_hash",)

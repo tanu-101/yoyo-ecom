@@ -1,9 +1,11 @@
 # Cursor Rules - E-Commerce Management System
 
 <links>
+- Agents: [AGENTS.md](AGENTS.md)
 - Core: [.agent/instructions/core.md](.agent/instructions/core.md)
 - Backend: [.agent/instructions/backend.md](.agent/instructions/backend.md)
 - API: [.agent/instructions/api.md](.agent/instructions/api.md)
+- Testing: [.agent/instructions/testing.md](.agent/instructions/testing.md)
 </links>
 
 <rule_files>
@@ -13,5 +15,7 @@
 <standards>
 - Always inherit from base models in `apps/common/models/base.py`.
 - Keep views thin; delegate logic to services/selectors.
+- Services own writes/business rules; selectors own reads.
+- Apply DRY/SOLID/KISS without premature abstraction.
 - Line length: 100.
 </standards>

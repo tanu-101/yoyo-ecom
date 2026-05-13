@@ -103,13 +103,21 @@ cd backend && ruff format .
 
 # Type check
 cd backend && mypy .
+
+# Seed demo data
+cd backend && python manage.py seed_data --customers 10 --staff 2 --admins 1
 ```
+
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## AI Agent Support
 
 This project is optimized for AI coding agents (Gemini, Cursor, Claude Code, GitHub Copilot).
 
-- `.agent/instructions/` - Centralized source of truth for all agents.
+- `AGENTS.md` - Compact entry point for AI coding agents.
+- `.agent/instructions/` - Modular source of truth for all agents.
 - `GEMINI.md` - Entry point for Gemini CLI.
 - `CLAUDE.md` - Entry point for Claude Code.
 - `.cursorrules` - Root rules for Cursor IDE.
@@ -118,12 +126,13 @@ This project is optimized for AI coding agents (Gemini, Cursor, Claude Code, Git
 
 ## Documentation
 
-- `docs/architecture.md` - System architecture
+- `docs/01-ARCHITECTURE.md` - System architecture
 - `docs/api-v1-contract.md` - API specifications
 - `docs/backend-plan.md` - Implementation roadmap
+- `docs/auth-user-implementation-plan.md` - Next implementation plan
 - `docs/database-final.md` - Database schema
-- `skills/` - Domain-specific guidance for agents
+- `.agent/instructions/` - Domain-specific guidance for agents
 
 ## License
 
-MIT
+[MIT](LICENSE)

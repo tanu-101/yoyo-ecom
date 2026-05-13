@@ -1,3 +1,5 @@
+from typing import cast
+
 import dj_database_url
 from decouple import Csv, config
 
@@ -5,7 +7,7 @@ from .base import *  # noqa: F403
 
 DEBUG = False
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
+ALLOWED_HOSTS = cast(list[str], config("ALLOWED_HOSTS", cast=Csv()))  # noqa: F405
 
 DATABASES["default"] = dj_database_url.config(  # type: ignore[assignment]  # noqa: F405
     default=config("DATABASE_URL"),
@@ -32,7 +34,10 @@ SECURE_REFERRER_POLICY = "same-origin"
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin"
 
 # CSRF Trusted Origins
-CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
+CSRF_TRUSTED_ORIGINS: list[str] = cast(
+    list[str],
+    config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv()),
+)
 
 # Logging override for production
 LOGGING["handlers"]["console"]["level"] = "INFO"  # noqa: F405

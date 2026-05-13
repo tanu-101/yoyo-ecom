@@ -9,5 +9,7 @@ globs: backend/apps/**/*.py
     - `services/`: Business logic and write operations.
     - `selectors/`: Read-only queries.
 - **Thin Views**: Views must delegate to services and selectors.
+- **DRY/SOLID**: Reuse common primitives; keep domain logic explicit and app-focused.
+- **Implementation Order**: Models/migrations -> selectors -> services -> serializers/views -> tests.
 - **Type Hints**: Use `from __future__ import annotations` and strict typing for all methods.
 - **Migrations**: Always provide a name using `--name`.
