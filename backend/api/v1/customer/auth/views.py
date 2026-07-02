@@ -11,14 +11,29 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.accounts.selectors.users import user_permissions
 from apps.accounts.services import authentication
+from apps.accounts.services.phone_verification import (
+    confirm_phone_change as svc_confirm_phone_change,
+)
+from apps.accounts.services.phone_verification import (
+    request_phone_change as svc_request_phone_change,
+)
+from apps.accounts.services.phone_verification import (
+    request_phone_verification as svc_request_phone_verification,
+)
+from apps.accounts.services.phone_verification import (
+    verify_phone as svc_verify_phone,
+)
 from apps.common.exceptions import DomainError
 
 from .serializers import (
+    ConfirmPhoneChangeSerializer,
     ForgotPasswordSerializer,
     LoginSerializer,
     LogoutSerializer,
+    PhoneVerificationCodeSerializer,
     RefreshSerializer,
     RegisterSerializer,
+    RequestPhoneChangeSerializer,
     ResetPasswordSerializer,
     UserSummarySerializer,
     VerifyEmailSerializer,
@@ -44,6 +59,7 @@ def _user_data(user) -> dict:
             "phone": user.phone,
             "profile_picture": user.profile_picture,
             "is_email_verified": user.is_email_verified,
+            "is_phone_verified": user.is_phone_verified,
             "permissions": user_permissions(user),
         }
     ).data
@@ -241,7 +257,8 @@ class RequestEmailVerificationView(APIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
-        responses=OpenApiTypes.OBJECT,
+        request=None,
+        responses=dict,
         examples=[
             OpenApiExample(
                 "Request email verification response",
@@ -354,3 +371,126 @@ class ResetPasswordView(APIView):
         except (DomainError, DjangoValidationError) as exc:
             return _error(exc)
         return Response({"data": {}, "message": "Password reset successful."})
+
+
+class RequestPhoneVerificationView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        request=None,
+        responses=dict,
+        examples=[
+            OpenApiExample(
+                "Request phone verification response",
+                value={"data": {}, "message": "Verification code sent to your phone."},
+                response_only=True,
+            ),
+        ],
+    )
+    def post(self, request) -> Response:
+        try:
+            svc_request_phone_verification(user=request.user)
+        except DomainError as exc:
+            return _error(exc)
+        return Response({"data": {}, "message": "Verification code sent to your phone."})
+
+
+class VerifyPhoneView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        request=PhoneVerificationCodeSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Verify phone request",
+                value={"code": "123456"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Verify phone response",
+                value={
+                    "data": {
+                        "id": "11111111-1111-1111-1111-111111111111",
+                        "email": "customer@example.com",
+                        "is_phone_verified": True,
+                    },
+                    "message": "Phone verified.",
+                },
+                response_only=True,
+            ),
+        ],
+    )
+    def post(self, request) -> Response:
+        serializer = PhoneVerificationCodeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            svc_verify_phone(user=request.user, **serializer.validated_data)
+        except DomainError as exc:
+            return _error(exc)
+        return Response({"data": _user_data(request.user), "message": "Phone verified."})
+
+
+class RequestPhoneChangeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        request=RequestPhoneChangeSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Request phone change request",
+                value={"new_phone": "+15551112222"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Request phone change response",
+                value={"data": {}, "message": "Verification code sent to new phone number."},
+                response_only=True,
+            ),
+        ],
+    )
+    def post(self, request) -> Response:
+        serializer = RequestPhoneChangeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            svc_request_phone_change(user=request.user, **serializer.validated_data)
+        except DomainError as exc:
+            return _error(exc)
+        return Response({"data": {}, "message": "Verification code sent to new phone number."})
+
+
+class ConfirmPhoneChangeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        request=ConfirmPhoneChangeSerializer,
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                "Confirm phone change request",
+                value={"code": "123456", "new_phone": "+15551112222"},
+                request_only=True,
+            ),
+            OpenApiExample(
+                "Confirm phone change response",
+                value={
+                    "data": {
+                        "id": "11111111-1111-1111-1111-111111111111",
+                        "phone": "+15551112222",
+                        "is_phone_verified": True,
+                    },
+                    "message": "Phone number updated.",
+                },
+                response_only=True,
+            ),
+        ],
+    )
+    def post(self, request) -> Response:
+        serializer = ConfirmPhoneChangeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            svc_confirm_phone_change(user=request.user, **serializer.validated_data)
+        except DomainError as exc:
+            return _error(exc)
+        return Response({"data": _user_data(request.user), "message": "Phone number updated."})

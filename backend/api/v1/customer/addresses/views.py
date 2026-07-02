@@ -26,6 +26,7 @@ class AddressListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
+        operation_id="v1_customer_addresses_list",
         responses=OpenApiTypes.OBJECT,
         examples=[
             OpenApiExample(
@@ -196,7 +197,8 @@ class SetDefaultAddressView(APIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
-        responses=OpenApiTypes.OBJECT,
+        request=None,
+        responses=dict,
         examples=[
             OpenApiExample(
                 "Set default address response",

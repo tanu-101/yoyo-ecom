@@ -11,6 +11,8 @@ class UserOTP(TimeStampedModel):
     class Purpose(models.TextChoices):
         EMAIL_VERIFICATION = "email_verification", "Email verification"
         PASSWORD_RESET = "password_reset", "Password reset"
+        PHONE_VERIFICATION = "phone_verification", "Phone verification"
+        PHONE_CHANGE = "phone_change", "Phone change"
 
     user: models.ForeignKey = models.ForeignKey(
         settings.AUTH_USER_MODEL,

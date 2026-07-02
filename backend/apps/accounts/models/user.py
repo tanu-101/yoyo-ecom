@@ -18,6 +18,7 @@ class User(AbstractUser, SoftDeleteModel):
     phone: models.CharField = models.CharField(max_length=32, blank=True)
     profile_picture: models.URLField = models.URLField(blank=True)
     is_email_verified: models.BooleanField = models.BooleanField(default=False)
+    is_phone_verified: models.BooleanField = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS: ClassVar[list[str]] = []

@@ -3,6 +3,7 @@ from __future__ import annotations
 from django.urls import path
 
 from .views import (
+    ConfirmPhoneChangeView,
     ForgotPasswordView,
     LoginView,
     LogoutView,
@@ -10,8 +11,11 @@ from .views import (
     RefreshView,
     RegisterView,
     RequestEmailVerificationView,
+    RequestPhoneChangeView,
+    RequestPhoneVerificationView,
     ResetPasswordView,
     VerifyEmailView,
+    VerifyPhoneView,
 )
 
 app_name = "customer_auth"
@@ -28,6 +32,22 @@ urlpatterns = [
         name="request-email-verification",
     ),
     path("verify-email/", VerifyEmailView.as_view(), name="verify-email"),
+    path(
+        "request-phone-verification/",
+        RequestPhoneVerificationView.as_view(),
+        name="request-phone-verification",
+    ),
+    path("verify-phone/", VerifyPhoneView.as_view(), name="verify-phone"),
+    path(
+        "request-phone-change/",
+        RequestPhoneChangeView.as_view(),
+        name="request-phone-change",
+    ),
+    path(
+        "confirm-phone-change/",
+        ConfirmPhoneChangeView.as_view(),
+        name="confirm-phone-change",
+    ),
     path("forgot-password/", ForgotPasswordView.as_view(), name="forgot-password"),
     path("reset-password/", ResetPasswordView.as_view(), name="reset-password"),
 ]

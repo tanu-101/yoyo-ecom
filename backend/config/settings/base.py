@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, cast
 
+import stripe
 from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -58,6 +59,7 @@ LOCAL_APPS = [
     "apps.notifications",
     "apps.analytics",
     "apps.support",
+    "apps.seed",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -184,12 +186,34 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "apps.common.pagination.DefaultPageNumberPagination",
     "PAGE_SIZE": 20,
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "60/hour",
+        "user": "6000/hour",
+    },
 }
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "E-Commerce Management API",
     "DESCRIPTION": "Backend API for the single-vendor e-commerce management system.",
     "VERSION": "1.0.0",
+    "ENUM_NAME_OVERRIDES": {
+        "ReturnResolution": "apps.returns.models.ReturnResolution",
+        "ReturnReason": "apps.returns.models.ReturnReason",
+        "ReturnStatus": "apps.returns.models.ReturnStatus",
+        "ReviewStatus": "apps.reviews.models.ReviewStatus",
+        "OrderStatus": "apps.orders.constants.OrderStatus",
+        "PaymentStatus": "apps.orders.constants.PaymentStatus",
+        "StockReservationStatus": "apps.inventory.constants.StockReservationStatus",
+        "ProductStatus": "apps.catalog.constants.ProductStatus",
+        "VariantStatus": "apps.catalog.constants.VariantStatus",
+        "TrackingStatus": "apps.shipping.constants.TrackingStatus",
+        "TransactionState": "apps.payments.constants.PaymentState",
+        "NotificationStatus": "apps.notifications.models.notification.NotificationStatus",
+    },
 }
 
 CORS_ALLOWED_ORIGINS: list[str] = cast(
@@ -200,6 +224,22 @@ CORS_ALLOWED_ORIGINS: list[str] = cast(
 # Email configuration
 EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@example.com")
+
+# Stripe configuration
+STRIPE_SECRET_KEY: str = config("STRIPE_SECRET_KEY", default="")
+STRIPE_WEBHOOK_SECRET: str = config("STRIPE_WEBHOOK_SECRET", default="")
+STRIPE_PUBLIC_KEY: str = config("STRIPE_PUBLIC_KEY", default="")
+STRIPE_API_VERSION: str = "2025-02-24.acacia"
+
+# Initialize Stripe SDK
+stripe.api_key = STRIPE_SECRET_KEY
+if STRIPE_API_VERSION:
+    stripe.api_version = STRIPE_API_VERSION
+
+# Twilio configuration
+TWILIO_ACCOUNT_SID: str = config("TWILIO_ACCOUNT_SID", default="")
+TWILIO_AUTH_TOKEN: str = config("TWILIO_AUTH_TOKEN", default="")
+TWILIO_PHONE_NUMBER: str = config("TWILIO_PHONE_NUMBER", default="")
 
 # Modern Storages (Django 4.2+)
 STORAGES: dict[str, Any] = {

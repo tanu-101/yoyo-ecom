@@ -1,0 +1,7038 @@
+openapi: 3.0.3
+info:
+  title: E-Commerce Management API
+  version: 1.0.0
+  description: Backend API for the single-vendor e-commerce management system.
+paths:
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/analytics/products/top/:
+    get:
+      operationId: v1_admin_analytics_products_top_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/analytics/returns/:
+    get:
+      operationId: v1_admin_analytics_returns_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/analytics/sales/:
+    get:
+      operationId: v1_admin_analytics_sales_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/analytics/summary/:
+    get:
+      operationId: v1_admin_analytics_summary_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/catalog/attribute-values/:
+    get:
+      operationId: v1_admin_catalog_attribute_values_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAdminVariantAttributeValueList'
+          description: ''
+    post:
+      operationId: v1_admin_catalog_attribute_values_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttributeValue'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttributeValue'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttributeValue'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariantAttributeValue'
+          description: ''
+  /api/v1/admin/catalog/attribute-values/{id}/:
+    get:
+      operationId: v1_admin_catalog_attribute_values_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant attribute value.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariantAttributeValue'
+          description: ''
+    put:
+      operationId: v1_admin_catalog_attribute_values_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant attribute value.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttributeValue'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttributeValue'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttributeValue'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariantAttributeValue'
+          description: ''
+    patch:
+      operationId: v1_admin_catalog_attribute_values_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant attribute value.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminVariantAttributeValue'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminVariantAttributeValue'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminVariantAttributeValue'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariantAttributeValue'
+          description: ''
+    delete:
+      operationId: v1_admin_catalog_attribute_values_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant attribute value.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/catalog/attributes/:
+    get:
+      operationId: v1_admin_catalog_attributes_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAdminVariantAttributeList'
+          description: ''
+    post:
+      operationId: v1_admin_catalog_attributes_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttribute'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttribute'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttribute'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariantAttribute'
+          description: ''
+  /api/v1/admin/catalog/attributes/{id}/:
+    get:
+      operationId: v1_admin_catalog_attributes_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant attribute.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariantAttribute'
+          description: ''
+    put:
+      operationId: v1_admin_catalog_attributes_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant attribute.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttribute'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttribute'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminVariantAttribute'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariantAttribute'
+          description: ''
+    patch:
+      operationId: v1_admin_catalog_attributes_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant attribute.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminVariantAttribute'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminVariantAttribute'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminVariantAttribute'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariantAttribute'
+          description: ''
+    delete:
+      operationId: v1_admin_catalog_attributes_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant attribute.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/catalog/categories/:
+    get:
+      operationId: v1_admin_catalog_categories_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAdminCategoryList'
+          description: ''
+    post:
+      operationId: v1_admin_catalog_categories_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminCategory'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminCategory'
+          description: ''
+  /api/v1/admin/catalog/categories/{id}/:
+    get:
+      operationId: v1_admin_catalog_categories_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this category.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminCategory'
+          description: ''
+    put:
+      operationId: v1_admin_catalog_categories_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this category.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminCategory'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminCategory'
+          description: ''
+    patch:
+      operationId: v1_admin_catalog_categories_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this category.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminCategory'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminCategory'
+          description: ''
+    delete:
+      operationId: v1_admin_catalog_categories_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this category.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/catalog/product-images/:
+    get:
+      operationId: v1_admin_catalog_product_images_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAdminProductImageList'
+          description: ''
+    post:
+      operationId: v1_admin_catalog_product_images_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminProductImage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminProductImage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminProductImage'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProductImage'
+          description: ''
+  /api/v1/admin/catalog/product-images/{id}/:
+    get:
+      operationId: v1_admin_catalog_product_images_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product image.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProductImage'
+          description: ''
+    put:
+      operationId: v1_admin_catalog_product_images_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product image.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminProductImage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminProductImage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminProductImage'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProductImage'
+          description: ''
+    patch:
+      operationId: v1_admin_catalog_product_images_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product image.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminProductImage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminProductImage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminProductImage'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProductImage'
+          description: ''
+    delete:
+      operationId: v1_admin_catalog_product_images_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product image.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/catalog/products/:
+    get:
+      operationId: v1_admin_catalog_products_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAdminProductList'
+          description: ''
+    post:
+      operationId: v1_admin_catalog_products_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminProduct'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProduct'
+          description: ''
+  /api/v1/admin/catalog/products/{id}/:
+    get:
+      operationId: v1_admin_catalog_products_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProduct'
+          description: ''
+    put:
+      operationId: v1_admin_catalog_products_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminProduct'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProduct'
+          description: ''
+    patch:
+      operationId: v1_admin_catalog_products_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminProduct'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProduct'
+          description: ''
+    delete:
+      operationId: v1_admin_catalog_products_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/catalog/variants/:
+    get:
+      operationId: v1_admin_catalog_variants_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAdminVariantList'
+          description: ''
+    post:
+      operationId: v1_admin_catalog_variants_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVariant'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminVariant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminVariant'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariant'
+          description: ''
+  /api/v1/admin/catalog/variants/{id}/:
+    get:
+      operationId: v1_admin_catalog_variants_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariant'
+          description: ''
+    put:
+      operationId: v1_admin_catalog_variants_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVariant'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminVariant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminVariant'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariant'
+          description: ''
+    patch:
+      operationId: v1_admin_catalog_variants_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminVariant'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminVariant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminVariant'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVariant'
+          description: ''
+    delete:
+      operationId: v1_admin_catalog_variants_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this variant.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/coupons/:
+    get:
+      operationId: v1_admin_coupons_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Coupon'
+          description: ''
+    post:
+      operationId: v1_admin_coupons_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CouponCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CouponCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CouponCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coupon'
+          description: ''
+  /api/v1/admin/coupons/{coupon_id}/:
+    get:
+      operationId: v1_admin_coupons_retrieve
+      parameters:
+      - in: path
+        name: coupon_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coupon'
+          description: ''
+    patch:
+      operationId: v1_admin_coupons_partial_update
+      parameters:
+      - in: path
+        name: coupon_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCouponCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCouponCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCouponCreate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coupon'
+          description: ''
+    delete:
+      operationId: v1_admin_coupons_destroy
+      parameters:
+      - in: path
+        name: coupon_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/inventory/adjustments/:
+    post:
+      operationId: v1_admin_inventory_adjustments_create
+      description: |-
+        POST /api/v1/admin/inventory/adjustments/
+        Manually adjust stock for a variant (add or remove).
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockAdjustment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StockAdjustment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StockAdjustment'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryTransaction'
+          description: ''
+  /api/v1/admin/inventory/reservations/:
+    get:
+      operationId: v1_admin_inventory_reservations_list
+      description: |-
+        GET /api/v1/admin/inventory/reservations/
+        Returns all active stock reservations (for admin visibility).
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StockReservation'
+          description: ''
+  /api/v1/admin/inventory/variants/{variant_id}/stock/:
+    get:
+      operationId: v1_admin_inventory_variants_stock_retrieve
+      description: |-
+        GET /api/v1/admin/inventory/variants/{variant_id}/stock/
+        Returns physical stock, active reservations, and net available quantity.
+      parameters:
+      - in: path
+        name: variant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantStockSummary'
+          description: ''
+  /api/v1/admin/inventory/variants/{variant_id}/transactions/:
+    get:
+      operationId: v1_admin_inventory_variants_transactions_list
+      description: |-
+        GET /api/v1/admin/inventory/variants/{variant_id}/transactions/
+        Returns the full audit log of stock changes for a variant.
+      parameters:
+      - in: path
+        name: variant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryTransaction'
+          description: ''
+  /api/v1/admin/notifications/:
+    get:
+      operationId: v1_admin_notifications_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminNotification'
+          description: ''
+  /api/v1/admin/notifications/preferences/:
+    get:
+      operationId: v1_admin_notifications_preferences_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminNotificationPreference'
+          description: ''
+  /api/v1/admin/orders/:
+    get:
+      operationId: v1_admin_orders_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminOrderList'
+          description: ''
+  /api/v1/admin/orders/{order_id}/:
+    get:
+      operationId: v1_admin_orders_retrieve
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderDetail'
+          description: ''
+  /api/v1/admin/orders/{order_id}/cancel/:
+    post:
+      operationId: v1_admin_orders_cancel_create
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCancelOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminCancelOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminCancelOrder'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderDetail'
+          description: ''
+  /api/v1/admin/orders/{order_id}/status/:
+    post:
+      operationId: v1_admin_orders_status_create
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateOrderStatus'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateOrderStatus'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateOrderStatus'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderDetail'
+          description: ''
+  /api/v1/admin/payments/:
+    get:
+      operationId: v1_admin_payments_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminPayment'
+          description: ''
+  /api/v1/admin/payments/{payment_id}/:
+    get:
+      operationId: v1_admin_payments_retrieve
+      parameters:
+      - in: path
+        name: payment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPayment'
+          description: ''
+  /api/v1/admin/payments/{payment_id}/refund/:
+    post:
+      operationId: v1_admin_payments_refund_create
+      parameters:
+      - in: path
+        name: payment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminRefund'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminRefund'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminRefund'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPayment'
+          description: ''
+  /api/v1/admin/returns/:
+    get:
+      operationId: v1_admin_returns_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/returns/{return_id}/:
+    get:
+      operationId: v1_admin_returns_retrieve
+      parameters:
+      - in: path
+        name: return_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/returns/{return_id}/approve/:
+    post:
+      operationId: v1_admin_returns_approve_create
+      parameters:
+      - in: path
+        name: return_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminApproveReturn'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminApproveReturn'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminApproveReturn'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/returns/{return_id}/mark-received/:
+    post:
+      operationId: v1_admin_returns_mark_received_create
+      parameters:
+      - in: path
+        name: return_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/returns/{return_id}/process/:
+    post:
+      operationId: v1_admin_returns_process_create
+      parameters:
+      - in: path
+        name: return_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/returns/{return_id}/reject/:
+    post:
+      operationId: v1_admin_returns_reject_create
+      parameters:
+      - in: path
+        name: return_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminRejectReturn'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminRejectReturn'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminRejectReturn'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/reviews/:
+    get:
+      operationId: v1_admin_reviews_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/reviews/{review_id}/approve/:
+    post:
+      operationId: v1_admin_reviews_approve_create
+      parameters:
+      - in: path
+        name: review_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/reviews/{review_id}/reject/:
+    post:
+      operationId: v1_admin_reviews_reject_create
+      parameters:
+      - in: path
+        name: review_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/shipping/orders/{order_id}/tracking/:
+    post:
+      operationId: v1_admin_shipping_orders_tracking_create
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminTracking'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminTracking'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminTracking'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/shipping/orders/{order_id}/tracking/update/:
+    patch:
+      operationId: v1_admin_shipping_orders_tracking_update_partial_update
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminTrackingUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminTrackingUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminTrackingUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/staff/:
+    get:
+      operationId: v1_admin_staff_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                StaffListResponse:
+                  value:
+                    data:
+                    - id: 11111111-1111-1111-1111-111111111111
+                      email: staff@example.com
+                      first_name: Sam
+                      last_name: Staff
+                      role: staff
+                      phone: '+15550000002'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: false
+                      is_superuser: false
+                      permissions:
+                      - manage_orders
+                    message: Success
+                  summary: Staff list response
+          description: ''
+    post:
+      operationId: v1_admin_staff_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffCreate'
+            examples:
+              StaffCreateRequest:
+                value:
+                  email: staff@example.com
+                  password: StrongPass123
+                  first_name: Sam
+                  last_name: Staff
+                  phone: '+15550000002'
+                  profile_picture: ''
+                  permissions:
+                  - manage_orders
+                summary: Staff create request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StaffCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StaffCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                StaffCreateResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: staff@example.com
+                      first_name: Sam
+                      last_name: Staff
+                      role: staff
+                      phone: '+15550000002'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: false
+                      is_superuser: false
+                      permissions:
+                      - manage_orders
+                    message: Success
+                  summary: Staff create response
+          description: ''
+  /api/v1/admin/staff/{user_id}/:
+    get:
+      operationId: v1_admin_staff_retrieve
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                StaffDetailResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: staff@example.com
+                      first_name: Sam
+                      last_name: Staff
+                      role: staff
+                      phone: '+15550000002'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: false
+                      is_superuser: false
+                      permissions:
+                      - manage_orders
+                    message: Success
+                  summary: Staff detail response
+          description: ''
+    patch:
+      operationId: v1_admin_staff_partial_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStaffUpdate'
+            examples:
+              StaffUpdateRequest:
+                value:
+                  last_name: Team
+                  is_active: true
+                summary: Staff update request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStaffUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStaffUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                StaffUpdateResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: staff@example.com
+                      first_name: Sam
+                      last_name: Team
+                      role: staff
+                      phone: '+15550000002'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: false
+                      is_superuser: false
+                      permissions:
+                      - manage_orders
+                    message: Success
+                  summary: Staff update response
+          description: ''
+  /api/v1/admin/staff/{user_id}/permissions/:
+    patch:
+      operationId: v1_admin_staff_permissions_partial_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStaffPermissionUpdate'
+            examples:
+              StaffPermissionsRequest:
+                value:
+                  permissions:
+                  - code: manage_orders
+                    enabled: true
+                summary: Staff permissions request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStaffPermissionUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStaffPermissionUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                StaffPermissionsResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: staff@example.com
+                      first_name: Sam
+                      last_name: Staff
+                      role: staff
+                      phone: '+15550000002'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: false
+                      is_superuser: false
+                      permissions:
+                      - manage_orders
+                    message: Success
+                  summary: Staff permissions response
+          description: ''
+  /api/v1/admin/users/:
+    get:
+      operationId: v1_admin_users_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AdminUserListResponse:
+                  value:
+                    data:
+                    - id: 11111111-1111-1111-1111-111111111111
+                      email: admin@example.com
+                      first_name: Admin
+                      last_name: User
+                      role: admin
+                      phone: '+15550000001'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: true
+                      is_superuser: false
+                      permissions:
+                      - manage_users
+                    message: Success
+                  summary: Admin user list response
+          description: ''
+    post:
+      operationId: v1_admin_users_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUserCreate'
+            examples:
+              AdminUserCreateRequest:
+                value:
+                  email: staff@example.com
+                  password: StrongPass123
+                  role: staff
+                  first_name: Sam
+                  last_name: Staff
+                  phone: '+15550000002'
+                  profile_picture: ''
+                  is_active: true
+                summary: Admin user create request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminUserCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminUserCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AdminUserCreateResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: staff@example.com
+                      first_name: Sam
+                      last_name: Staff
+                      role: staff
+                      phone: '+15550000002'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: false
+                      is_superuser: false
+                      permissions: []
+                    message: Success
+                  summary: Admin user create response
+          description: ''
+  /api/v1/admin/users/{user_id}/:
+    get:
+      operationId: v1_admin_users_retrieve
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AdminUserDetailResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: admin@example.com
+                      first_name: Admin
+                      last_name: User
+                      role: admin
+                      phone: '+15550000001'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: true
+                      is_superuser: false
+                      permissions:
+                      - manage_users
+                    message: Success
+                  summary: Admin user detail response
+          description: ''
+    patch:
+      operationId: v1_admin_users_partial_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminUserUpdate'
+            examples:
+              AdminUserUpdateRequest:
+                value:
+                  last_name: Manager
+                  is_active: true
+                summary: Admin user update request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminUserUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminUserUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AdminUserUpdateResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: admin@example.com
+                      first_name: Admin
+                      last_name: Manager
+                      role: admin
+                      phone: '+15550000001'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: true
+                      is_superuser: false
+                      permissions:
+                      - manage_users
+                    message: Success
+                  summary: Admin user update response
+          description: ''
+  /api/v1/admin/users/{user_id}/activate/:
+    post:
+      operationId: v1_admin_users_activate_create
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AdminUserActionResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: admin@example.com
+                      first_name: Admin
+                      last_name: User
+                      role: admin
+                      phone: '+15550000001'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: true
+                      is_superuser: false
+                      permissions:
+                      - manage_users
+                    message: Success
+                  summary: Admin user action response
+          description: ''
+  /api/v1/admin/users/{user_id}/deactivate/:
+    post:
+      operationId: v1_admin_users_deactivate_create
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AdminUserActionResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: admin@example.com
+                      first_name: Admin
+                      last_name: User
+                      role: admin
+                      phone: '+15550000001'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: true
+                      is_superuser: false
+                      permissions:
+                      - manage_users
+                    message: Success
+                  summary: Admin user action response
+          description: ''
+  /api/v1/admin/users/{user_id}/reset-password/:
+    post:
+      operationId: v1_admin_users_reset_password_create
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+            examples:
+              AdminResetPasswordRequest:
+                value:
+                  new_password: NewStrongPass123
+                summary: Admin reset password request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AdminResetPasswordResponse:
+                  value:
+                    data: {}
+                    message: Password reset successful.
+                  summary: Admin reset password response
+          description: ''
+  /api/v1/admin/users/{user_id}/set-role/:
+    post:
+      operationId: v1_admin_users_set_role_create
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetRole'
+            examples:
+              AdminSetRoleRequest:
+                value:
+                  role: staff
+                summary: Admin set role request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SetRole'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AdminSetRoleResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: staff@example.com
+                      first_name: Sam
+                      last_name: Staff
+                      role: staff
+                      phone: '+15550000002'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: false
+                      is_superuser: false
+                      permissions: []
+                    message: Success
+                  summary: Admin set role response
+          description: ''
+  /api/v1/admin/users/{user_id}/soft-delete/:
+    post:
+      operationId: v1_admin_users_soft_delete_create
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AdminUserActionResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: admin@example.com
+                      first_name: Admin
+                      last_name: User
+                      role: admin
+                      phone: '+15550000001'
+                      profile_picture: ''
+                      is_active: true
+                      is_email_verified: true
+                      is_superuser: false
+                      permissions:
+                      - manage_users
+                    message: Success
+                  summary: Admin user action response
+          description: ''
+  /api/v1/customer/addresses/:
+    get:
+      operationId: v1_customer_addresses_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AddressListResponse:
+                  value:
+                    data:
+                    - id: 22222222-2222-2222-2222-222222222222
+                      full_name: Jane Doe
+                      phone: '+15550000000'
+                      line1: 123 Market Street
+                      line2: Suite 10
+                      city: San Francisco
+                      state: CA
+                      postal_code: '94105'
+                      country: US
+                      is_default: true
+                    message: Success
+                  summary: Address list response
+          description: ''
+    post:
+      operationId: v1_customer_addresses_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+            examples:
+              AddressCreateRequest:
+                value:
+                  full_name: Jane Doe
+                  phone: '+15550000000'
+                  line1: 123 Market Street
+                  line2: Suite 10
+                  city: San Francisco
+                  state: CA
+                  postal_code: '94105'
+                  country: US
+                  is_default: true
+                summary: Address create request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Address'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Address'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AddressCreateResponse:
+                  value:
+                    data:
+                      id: 22222222-2222-2222-2222-222222222222
+                      full_name: Jane Doe
+                      phone: '+15550000000'
+                      line1: 123 Market Street
+                      line2: Suite 10
+                      city: San Francisco
+                      state: CA
+                      postal_code: '94105'
+                      country: US
+                      is_default: true
+                    message: Success
+                  summary: Address create response
+          description: ''
+  /api/v1/customer/addresses/{address_id}/:
+    get:
+      operationId: v1_customer_addresses_retrieve
+      parameters:
+      - in: path
+        name: address_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AddressDetailResponse:
+                  value:
+                    data:
+                      id: 22222222-2222-2222-2222-222222222222
+                      full_name: Jane Doe
+                      phone: '+15550000000'
+                      line1: 123 Market Street
+                      line2: Suite 10
+                      city: San Francisco
+                      state: CA
+                      postal_code: '94105'
+                      country: US
+                      is_default: true
+                    message: Success
+                  summary: Address detail response
+          description: ''
+    patch:
+      operationId: v1_customer_addresses_partial_update
+      parameters:
+      - in: path
+        name: address_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAddressUpdate'
+            examples:
+              AddressUpdateRequest:
+                value:
+                  city: Oakland
+                  postal_code: '94607'
+                summary: Address update request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAddressUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAddressUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                AddressUpdateResponse:
+                  value:
+                    data:
+                      id: 22222222-2222-2222-2222-222222222222
+                      full_name: Jane Doe
+                      phone: '+15550000000'
+                      line1: 123 Market Street
+                      line2: Suite 10
+                      city: Oakland
+                      state: CA
+                      postal_code: '94607'
+                      country: US
+                      is_default: true
+                    message: Success
+                  summary: Address update response
+          description: ''
+    delete:
+      operationId: v1_customer_addresses_destroy
+      parameters:
+      - in: path
+        name: address_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/customer/addresses/{address_id}/set-default/:
+    post:
+      operationId: v1_customer_addresses_set_default_create
+      parameters:
+      - in: path
+        name: address_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                SetDefaultAddressResponse:
+                  value:
+                    data:
+                      id: 22222222-2222-2222-2222-222222222222
+                      full_name: Jane Doe
+                      phone: '+15550000000'
+                      line1: 123 Market Street
+                      line2: Suite 10
+                      city: San Francisco
+                      state: CA
+                      postal_code: '94105'
+                      country: US
+                      is_default: true
+                    message: Success
+                  summary: Set default address response
+          description: ''
+  /api/v1/customer/auth/confirm-phone-change/:
+    post:
+      operationId: v1_customer_auth_confirm_phone_change_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmPhoneChange'
+            examples:
+              ConfirmPhoneChangeRequest:
+                value:
+                  code: '123456'
+                  new_phone: '+15551112222'
+                summary: Confirm phone change request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConfirmPhoneChange'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConfirmPhoneChange'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                ConfirmPhoneChangeResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      phone: '+15551112222'
+                      is_phone_verified: true
+                    message: Phone number updated.
+                  summary: Confirm phone change response
+          description: ''
+  /api/v1/customer/auth/forgot-password/:
+    post:
+      operationId: v1_customer_auth_forgot_password_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPassword'
+            examples:
+              ForgotPasswordRequest:
+                value:
+                  email: customer@example.com
+                summary: Forgot password request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ForgotPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ForgotPassword'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                ForgotPasswordResponse:
+                  value:
+                    data: {}
+                    message: If the email exists, a reset code was sent.
+                  summary: Forgot password response
+          description: ''
+  /api/v1/customer/auth/login/:
+    post:
+      operationId: v1_customer_auth_login_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+            examples:
+              LoginRequest:
+                value:
+                  email: customer@example.com
+                  password: StrongPass123
+                summary: Login request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                LoginResponse:
+                  value:
+                    data:
+                      access: eyJhbGciOiJIUzI1NiIs...
+                      refresh: eyJhbGciOiJIUzI1NiIs...
+                      user:
+                        id: 11111111-1111-1111-1111-111111111111
+                        email: customer@example.com
+                        first_name: Jane
+                        last_name: Doe
+                        role: customer
+                        phone: '+15550000000'
+                        profile_picture: ''
+                        is_email_verified: false
+                        permissions: []
+                    message: Success
+                  summary: Login response
+          description: ''
+  /api/v1/customer/auth/logout/:
+    post:
+      operationId: v1_customer_auth_logout_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Logout'
+            examples:
+              LogoutRequest:
+                value:
+                  refresh: eyJhbGciOiJIUzI1NiIs...
+                summary: Logout request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Logout'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/customer/auth/me/:
+    get:
+      operationId: v1_customer_auth_me_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                MeResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: customer@example.com
+                      first_name: Jane
+                      last_name: Doe
+                      role: customer
+                      phone: '+15550000000'
+                      profile_picture: ''
+                      is_email_verified: true
+                      permissions: []
+                    message: Success
+                  summary: Me response
+          description: ''
+  /api/v1/customer/auth/refresh/:
+    post:
+      operationId: v1_customer_auth_refresh_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Refresh'
+            examples:
+              RefreshRequest:
+                value:
+                  refresh: eyJhbGciOiJIUzI1NiIs...
+                summary: Refresh request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Refresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Refresh'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                RefreshResponse:
+                  value:
+                    data:
+                      access: eyJhbGciOiJIUzI1NiIs...
+                    message: Success
+                  summary: Refresh response
+          description: ''
+  /api/v1/customer/auth/register/:
+    post:
+      operationId: v1_customer_auth_register_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+            examples:
+              RegisterRequest:
+                value:
+                  email: customer@example.com
+                  password: StrongPass123
+                  first_name: Jane
+                  last_name: Doe
+                  phone: '+15550000000'
+                summary: Register request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                RegisterResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: customer@example.com
+                      first_name: Jane
+                      last_name: Doe
+                      role: customer
+                      phone: '+15550000000'
+                      profile_picture: ''
+                      is_email_verified: false
+                      permissions: []
+                    message: Success
+                  summary: Register response
+          description: ''
+  /api/v1/customer/auth/request-email-verification/:
+    post:
+      operationId: v1_customer_auth_request_email_verification_create
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                RequestEmailVerificationResponse:
+                  value:
+                    data: {}
+                    message: Verification code sent.
+                  summary: Request email verification response
+          description: ''
+  /api/v1/customer/auth/request-phone-change/:
+    post:
+      operationId: v1_customer_auth_request_phone_change_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestPhoneChange'
+            examples:
+              RequestPhoneChangeRequest:
+                value:
+                  new_phone: '+15551112222'
+                summary: Request phone change request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RequestPhoneChange'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RequestPhoneChange'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                RequestPhoneChangeResponse:
+                  value:
+                    data: {}
+                    message: Verification code sent to new phone number.
+                  summary: Request phone change response
+          description: ''
+  /api/v1/customer/auth/request-phone-verification/:
+    post:
+      operationId: v1_customer_auth_request_phone_verification_create
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                RequestPhoneVerificationResponse:
+                  value:
+                    data: {}
+                    message: Verification code sent to your phone.
+                  summary: Request phone verification response
+          description: ''
+  /api/v1/customer/auth/reset-password/:
+    post:
+      operationId: v1_customer_auth_reset_password_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+            examples:
+              ResetPasswordRequest:
+                value:
+                  email: customer@example.com
+                  code: '123456'
+                  new_password: NewStrongPass123
+                summary: Reset password request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                ResetPasswordResponse:
+                  value:
+                    data: {}
+                    message: Password reset successful.
+                  summary: Reset password response
+          description: ''
+  /api/v1/customer/auth/verify-email/:
+    post:
+      operationId: v1_customer_auth_verify_email_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+            examples:
+              VerifyEmailRequest:
+                value:
+                  code: '123456'
+                summary: Verify email request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                VerifyEmailResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: customer@example.com
+                      first_name: Jane
+                      last_name: Doe
+                      role: customer
+                      phone: '+15550000000'
+                      profile_picture: ''
+                      is_email_verified: true
+                      permissions: []
+                    message: Email verified.
+                  summary: Verify email response
+          description: ''
+  /api/v1/customer/auth/verify-phone/:
+    post:
+      operationId: v1_customer_auth_verify_phone_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneVerificationCode'
+            examples:
+              VerifyPhoneRequest:
+                value:
+                  code: '123456'
+                summary: Verify phone request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PhoneVerificationCode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PhoneVerificationCode'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                VerifyPhoneResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: customer@example.com
+                      is_phone_verified: true
+                    message: Phone verified.
+                  summary: Verify phone response
+          description: ''
+  /api/v1/customer/cart/:
+    get:
+      operationId: v1_customer_cart_retrieve
+      description: |-
+        GET  /api/v1/customer/cart/   — Retrieve current cart with items and totals.
+        DELETE /api/v1/customer/cart/ — Clear all items from the cart.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+    delete:
+      operationId: v1_customer_cart_destroy
+      description: |-
+        GET  /api/v1/customer/cart/   — Retrieve current cart with items and totals.
+        DELETE /api/v1/customer/cart/ — Clear all items from the cart.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/customer/cart/items/:
+    post:
+      operationId: v1_customer_cart_items_create
+      description: POST /api/v1/customer/cart/items/ — Add an item to the cart.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCartItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AddCartItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AddCartItem'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+          description: ''
+  /api/v1/customer/cart/items/{item_id}/:
+    patch:
+      operationId: v1_customer_cart_items_partial_update
+      description: |-
+        PATCH  /api/v1/customer/cart/items/{id}/ — Update item quantity.
+        DELETE /api/v1/customer/cart/items/{id}/ — Remove item from cart.
+      parameters:
+      - in: path
+        name: item_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateCartItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateCartItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateCartItem'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+          description: ''
+    delete:
+      operationId: v1_customer_cart_items_destroy
+      description: |-
+        PATCH  /api/v1/customer/cart/items/{id}/ — Update item quantity.
+        DELETE /api/v1/customer/cart/items/{id}/ — Remove item from cart.
+      parameters:
+      - in: path
+        name: item_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/customer/notifications/:
+    get:
+      operationId: v1_customer_notifications_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/customer/notifications/preferences/:
+    get:
+      operationId: v1_customer_notifications_preferences_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreference'
+          description: ''
+    patch:
+      operationId: v1_customer_notifications_preferences_partial_update
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationPreference'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationPreference'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationPreference'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreference'
+          description: ''
+  /api/v1/customer/orders/:
+    get:
+      operationId: v1_customer_orders_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/customer/orders/{order_id}/:
+    get:
+      operationId: v1_customer_orders_retrieve
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/customer/orders/{order_id}/cancel/:
+    post:
+      operationId: v1_customer_orders_cancel_create
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CancelOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CancelOrder'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/customer/orders/checkout/:
+    post:
+      operationId: v1_customer_orders_checkout_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/customer/payments/:
+    get:
+      operationId: v1_customer_payments_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/v1/customer/payments/{payment_id}/:
+    get:
+      operationId: v1_customer_payments_retrieve
+      parameters:
+      - in: path
+        name: payment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/v1/customer/payments/create-intent/:
+    post:
+      operationId: v1_customer_payments_create_intent_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentIntent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentIntent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentIntent'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/v1/customer/profile/:
+    get:
+      operationId: v1_customer_profile_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                ProfileResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: customer@example.com
+                      first_name: Jane
+                      last_name: Doe
+                      role: customer
+                      phone: '+15550000000'
+                      profile_picture: ''
+                      is_email_verified: true
+                      permissions: []
+                    message: Success
+                  summary: Profile response
+          description: ''
+    patch:
+      operationId: v1_customer_profile_partial_update
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileUpdate'
+            examples:
+              ProfileUpdateRequest:
+                value:
+                  first_name: Jane
+                  last_name: Smith
+                summary: Profile update request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                ProfileUpdateResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: customer@example.com
+                      first_name: Jane
+                      last_name: Smith
+                      role: customer
+                      phone: '+15550000000'
+                      profile_picture: ''
+                      is_email_verified: true
+                      permissions: []
+                    message: Success
+                  summary: Profile update response
+          description: ''
+  /api/v1/customer/profile/change-password/:
+    post:
+      operationId: v1_customer_profile_change_password_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+            examples:
+              ChangePasswordRequest:
+                value:
+                  old_password: OldStrongPass123
+                  new_password: NewStrongPass123
+                summary: Change password request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                ChangePasswordResponse:
+                  value:
+                    data: {}
+                    message: Password changed.
+                  summary: Change password response
+          description: ''
+  /api/v1/customer/profile/image/:
+    patch:
+      operationId: v1_customer_profile_image_partial_update
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileImage'
+            examples:
+              ProfileImageRequest:
+                value:
+                  profile_picture: https://cdn.example.com/profiles/jane.png
+                summary: Profile image request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileImage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileImage'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                ProfileImageResponse:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      email: customer@example.com
+                      first_name: Jane
+                      last_name: Doe
+                      role: customer
+                      phone: '+15550000000'
+                      profile_picture: https://cdn.example.com/profiles/jane.png
+                      is_email_verified: true
+                      permissions: []
+                    message: Success
+                  summary: Profile image response
+          description: ''
+  /api/v1/customer/returns/:
+    post:
+      operationId: v1_customer_returns_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReturn'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateReturn'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateReturn'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+  /api/v1/customer/returns/{return_id}/:
+    get:
+      operationId: v1_customer_returns_retrieve
+      parameters:
+      - in: path
+        name: return_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+  /api/v1/customer/returns/list/:
+    get:
+      operationId: v1_customer_returns_list_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+  /api/v1/customer/reviews/:
+    post:
+      operationId: v1_customer_reviews_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateReview'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+          description: ''
+  /api/v1/customer/reviews/{review_id}/:
+    patch:
+      operationId: v1_customer_reviews_partial_update
+      parameters:
+      - in: path
+        name: review_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedReview'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+          description: ''
+  /api/v1/customer/wishlist/:
+    get:
+      operationId: v1_customer_wishlist_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WishlistItem'
+          description: ''
+    post:
+      operationId: v1_customer_wishlist_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddWishlistItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AddWishlistItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AddWishlistItem'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WishlistItem'
+          description: ''
+  /api/v1/customer/wishlist/{item_id}/:
+    delete:
+      operationId: v1_customer_wishlist_destroy
+      parameters:
+      - in: path
+        name: item_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/customer/wishlist/{item_id}/move-to-cart/:
+    post:
+      operationId: v1_customer_wishlist_move_to_cart_create
+      parameters:
+      - in: path
+        name: item_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoveToCart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MoveToCart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MoveToCart'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/public/catalog/categories/:
+    get:
+      operationId: v1_public_catalog_categories_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCategoryList'
+          description: ''
+  /api/v1/public/catalog/products/:
+    get:
+      operationId: v1_public_catalog_products_list
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: is_featured
+        schema:
+          type: boolean
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductListList'
+          description: ''
+  /api/v1/public/catalog/products/{slug}/:
+    get:
+      operationId: v1_public_catalog_products_retrieve
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+  /api/v1/public/reviews/products/{product_id}/:
+    get:
+      operationId: v1_public_reviews_products_list
+      parameters:
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicReview'
+          description: ''
+  /api/v1/public/shipping/methods/:
+    get:
+      operationId: v1_public_shipping_methods_list
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShippingMethod'
+          description: ''
+  /api/v1/webhooks/stripe/:
+    post:
+      operationId: v1_webhooks_stripe_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StripeWebhook'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StripeWebhook'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StripeWebhook'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+components:
+  schemas:
+    AddCartItem:
+      type: object
+      properties:
+        variant_id:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+      required:
+      - quantity
+      - variant_id
+    AddWishlistItem:
+      type: object
+      properties:
+        product:
+          type: string
+          format: uuid
+        variant:
+          type: string
+          format: uuid
+          nullable: true
+        notes:
+          type: string
+          maxLength: 500
+      required:
+      - product
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 32
+        line1:
+          type: string
+          maxLength: 255
+        line2:
+          type: string
+          maxLength: 255
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 100
+        postal_code:
+          type: string
+          maxLength: 32
+        country:
+          type: string
+          maxLength: 100
+        is_default:
+          type: boolean
+      required:
+      - city
+      - country
+      - full_name
+      - id
+      - line1
+      - phone
+      - postal_code
+    AdminApproveReturn:
+      type: object
+      properties:
+        resolution:
+          $ref: '#/components/schemas/ReturnResolution'
+        refund_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        admin_notes:
+          type: string
+          maxLength: 2000
+      required:
+      - resolution
+    AdminCancelOrder:
+      type: object
+      properties:
+        reason:
+          type: string
+          maxLength: 2000
+    AdminCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+        parent:
+          type: string
+          format: uuid
+          nullable: true
+        image:
+          type: string
+          format: uri
+          maxLength: 200
+        is_active:
+          type: boolean
+        sort_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - slug
+      - updated_at
+    AdminNotification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        channel:
+          $ref: '#/components/schemas/ChannelEnum'
+        notification_type:
+          type: string
+          maxLength: 100
+        subject:
+          type: string
+          maxLength: 255
+        body:
+          type: string
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+        sent_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - body
+      - channel
+      - created_at
+      - id
+      - notification_type
+      - sent_at
+      - user
+      - user_email
+    AdminNotificationPreference:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        order_updates_email:
+          type: boolean
+        order_updates_sms:
+          type: boolean
+        promotions_email:
+          type: boolean
+        promotions_sms:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - updated_at
+      - user
+      - user_email
+    AdminOrderBrief:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        order_number:
+          type: string
+          maxLength: 50
+      required:
+      - id
+      - order_number
+    AdminOrderDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        order_number:
+          type: string
+          maxLength: 50
+        customer:
+          allOf:
+          - $ref: '#/components/schemas/CustomerBrief'
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        payment_status:
+          $ref: '#/components/schemas/PaymentStatus'
+        subtotal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        shipping_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        tax_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        customer_notes:
+          type: string
+        admin_notes:
+          type: string
+        placed_at:
+          type: string
+          format: date-time
+          nullable: true
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        shipped_at:
+          type: string
+          format: date-time
+          nullable: true
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancelled_by:
+          type: string
+          format: uuid
+          nullable: true
+        cancellation_reason:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminOrderItem'
+          readOnly: true
+        status_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminOrderStatusHistory'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - customer
+      - id
+      - items
+      - order_number
+      - status_history
+      - subtotal
+      - total_amount
+      - updated_at
+    AdminOrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        variant:
+          type: string
+          format: uuid
+        product_name:
+          type: string
+          maxLength: 255
+        variant_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          maxLength: 100
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        line_total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - line_total
+      - product
+      - product_name
+      - quantity
+      - sku
+      - unit_price
+      - variant
+      - variant_name
+    AdminOrderList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        order_number:
+          type: string
+          maxLength: 50
+        customer:
+          allOf:
+          - $ref: '#/components/schemas/CustomerBrief'
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        payment_status:
+          $ref: '#/components/schemas/PaymentStatus'
+        subtotal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - customer
+      - id
+      - order_number
+      - subtotal
+      - total_amount
+      - updated_at
+    AdminOrderStatusHistory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        from_status:
+          type: string
+          nullable: true
+          maxLength: 30
+        to_status:
+          type: string
+          maxLength: 30
+        changed_by:
+          type: string
+          format: uuid
+          nullable: true
+        reason:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - to_status
+    AdminPayment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        order:
+          allOf:
+          - $ref: '#/components/schemas/AdminOrderBrief'
+          readOnly: true
+        provider:
+          $ref: '#/components/schemas/ProviderEnum'
+        provider_payment_intent_id:
+          type: string
+          nullable: true
+          maxLength: 255
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        status:
+          $ref: '#/components/schemas/TransactionState'
+        failure_reason:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - amount
+      - created_at
+      - id
+      - order
+      - updated_at
+    AdminProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        category:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+        base_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        status:
+          $ref: '#/components/schemas/ProductStatus'
+        is_featured:
+          type: boolean
+        created_by:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - base_price
+      - category
+      - created_at
+      - created_by
+      - description
+      - id
+      - name
+      - slug
+      - updated_at
+    AdminProductImage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        image:
+          type: string
+          format: uri
+          maxLength: 200
+        alt_text:
+          type: string
+          maxLength: 255
+        sort_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        is_primary:
+          type: boolean
+      required:
+      - id
+      - image
+      - product
+    AdminRefund:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          maxLength: 2000
+      required:
+      - amount
+    AdminRejectReturn:
+      type: object
+      properties:
+        rejection_reason:
+          type: string
+          maxLength: 2000
+        admin_notes:
+          type: string
+          maxLength: 2000
+      required:
+      - rejection_reason
+    AdminTracking:
+      type: object
+      properties:
+        carrier:
+          type: string
+          maxLength: 255
+        tracking_number:
+          type: string
+          maxLength: 255
+        tracking_url:
+          type: string
+          format: uri
+        estimated_delivery:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - carrier
+      - tracking_number
+    AdminTrackingUpdateStatusEnum:
+      enum:
+      - processing
+      - in_transit
+      - out_for_delivery
+      - delivered
+      - exception
+      type: string
+      description: |-
+        * `processing` - processing
+        * `in_transit` - in_transit
+        * `out_for_delivery` - out_for_delivery
+        * `delivered` - delivered
+        * `exception` - exception
+    AdminUpdateOrderStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/AdminUpdateOrderStatusStatusEnum'
+        reason:
+          type: string
+          maxLength: 2000
+      required:
+      - status
+    AdminUpdateOrderStatusStatusEnum:
+      enum:
+      - placed
+      - processing
+      - shipped
+      - delivered
+      type: string
+      description: |-
+        * `placed` - placed
+        * `processing` - processing
+        * `shipped` - shipped
+        * `delivered` - delivered
+    AdminUserCreate:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          default: customer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        profile_picture:
+          type: string
+        is_active:
+          type: boolean
+          default: true
+      required:
+      - email
+      - password
+    AdminVariant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        sku:
+          type: string
+          maxLength: 100
+        name:
+          type: string
+          maxLength: 255
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        stock_quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        status:
+          $ref: '#/components/schemas/VariantStatus'
+        image:
+          type: string
+          format: uri
+          maxLength: 200
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - price
+      - product
+      - sku
+      - updated_at
+    AdminVariantAttribute:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        slug:
+          type: string
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - id
+      - name
+      - slug
+    AdminVariantAttributeValue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        attribute:
+          type: string
+          format: uuid
+        value:
+          type: string
+          maxLength: 100
+        slug:
+          type: string
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - attribute
+      - id
+      - slug
+      - value
+    BlankEnum:
+      enum:
+      - ''
+    CancelOrder:
+      type: object
+      properties:
+        reason:
+          type: string
+          maxLength: 2000
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+          readOnly: true
+        totals:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - items
+      - totals
+      - updated_at
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          allOf:
+          - $ref: '#/components/schemas/CartItemProduct'
+          readOnly: true
+        variant:
+          allOf:
+          - $ref: '#/components/schemas/CartItemVariant'
+          readOnly: true
+        quantity:
+          type: integer
+          readOnly: true
+        unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        line_total:
+          type: number
+          format: double
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - line_total
+      - product
+      - quantity
+      - unit_price
+      - updated_at
+      - variant
+    CartItemProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      required:
+      - id
+      - name
+      - slug
+    CartItemVariant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sku:
+          type: string
+        name:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        image:
+          type: string
+        stock_quantity:
+          type: integer
+      required:
+      - id
+      - image
+      - name
+      - price
+      - sku
+      - stock_quantity
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+        image:
+          type: string
+          format: uri
+          maxLength: 200
+        parent:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - id
+      - name
+      - slug
+    ChangePassword:
+      type: object
+      properties:
+        old_password:
+          type: string
+          writeOnly: true
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 8
+      required:
+      - new_password
+      - old_password
+    ChannelEnum:
+      enum:
+      - email
+      - sms
+      - in_app
+      type: string
+      description: |-
+        * `email` - Email
+        * `sms` - SMS
+        * `in_app` - In app
+    Checkout:
+      type: object
+      properties:
+        shipping_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          default: '0.00'
+        tax_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          default: '0.00'
+        customer_notes:
+          type: string
+          maxLength: 2000
+    ConfirmPhoneChange:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 6
+          minLength: 6
+        new_phone:
+          type: string
+      required:
+      - code
+      - new_phone
+    Coupon:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        code:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+        discount_type:
+          $ref: '#/components/schemas/DiscountTypeEnum'
+        discount_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        min_order_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        max_discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+        max_usage_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          nullable: true
+        usage_count:
+          type: integer
+          readOnly: true
+        per_customer_limit:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        valid_from:
+          type: string
+          format: date-time
+        valid_until:
+          type: string
+          format: date-time
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - code
+      - created_at
+      - discount_type
+      - discount_value
+      - id
+      - updated_at
+      - usage_count
+      - valid_from
+    CouponCreate:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+        discount_type:
+          $ref: '#/components/schemas/DiscountTypeEnum'
+        discount_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        min_order_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        max_discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+        max_usage_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          nullable: true
+        per_customer_limit:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        valid_from:
+          type: string
+          format: date-time
+        valid_until:
+          type: string
+          format: date-time
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - code
+      - discount_type
+      - discount_value
+      - valid_from
+    CreatePaymentIntent:
+      type: object
+      properties:
+        order:
+          type: string
+          format: uuid
+      required:
+      - order
+    CreateReturn:
+      type: object
+      properties:
+        order:
+          type: string
+          format: uuid
+        reason:
+          $ref: '#/components/schemas/CreateReturnReasonEnum'
+        comments:
+          type: string
+          maxLength: 2000
+        resolution:
+          $ref: '#/components/schemas/CreateReturnResolutionEnum'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReturnItem'
+        images:
+          type: array
+          items:
+            type: string
+            maxLength: 500
+      required:
+      - items
+      - order
+      - reason
+      - resolution
+    CreateReturnReasonEnum:
+      enum:
+      - damaged
+      - wrong_item
+      - missing_item
+      - defective
+      - other
+      type: string
+      description: |-
+        * `damaged` - damaged
+        * `wrong_item` - wrong_item
+        * `missing_item` - missing_item
+        * `defective` - defective
+        * `other` - other
+    CreateReturnResolutionEnum:
+      enum:
+      - refund
+      - replacement
+      - store_credit
+      type: string
+      description: |-
+        * `refund` - refund
+        * `replacement` - replacement
+        * `store_credit` - store_credit
+    CreateReview:
+      type: object
+      properties:
+        order_item:
+          type: string
+          format: uuid
+        rating:
+          type: integer
+          maximum: 5
+          minimum: 1
+        title:
+          type: string
+          maxLength: 255
+        content:
+          type: string
+          maxLength: 5000
+        images:
+          type: array
+          items:
+            type: string
+            maxLength: 500
+      required:
+      - order_item
+      - rating
+      - title
+    CustomerBrief:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - id
+    DiscountTypeEnum:
+      enum:
+      - percentage
+      - fixed_amount
+      type: string
+      description: |-
+        * `percentage` - Percentage
+        * `fixed_amount` - Fixed amount
+    ForgotPassword:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    InventoryTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        variant:
+          type: string
+          format: uuid
+          readOnly: true
+        transaction_type:
+          allOf:
+          - $ref: '#/components/schemas/TransactionTypeEnum'
+          readOnly: true
+        quantity_changed:
+          type: integer
+          readOnly: true
+        stock_before:
+          type: integer
+          readOnly: true
+        stock_after:
+          type: integer
+          readOnly: true
+        reference_type:
+          type: string
+          readOnly: true
+        reference_id:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        notes:
+          type: string
+          readOnly: true
+        created_by:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        created_by_email:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - created_by_email
+      - id
+      - notes
+      - quantity_changed
+      - reference_id
+      - reference_type
+      - stock_after
+      - stock_before
+      - transaction_type
+      - variant
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+    Logout:
+      type: object
+      properties:
+        refresh:
+          type: string
+      required:
+      - refresh
+    MoveToCart:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          minimum: 1
+          default: 1
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        channel:
+          $ref: '#/components/schemas/ChannelEnum'
+        notification_type:
+          type: string
+          maxLength: 100
+        subject:
+          type: string
+          maxLength: 255
+        body:
+          type: string
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+        sent_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - body
+      - channel
+      - created_at
+      - id
+      - notification_type
+    NotificationPreference:
+      type: object
+      properties:
+        order_updates_email:
+          type: boolean
+        order_updates_sms:
+          type: boolean
+        promotions_email:
+          type: boolean
+        promotions_sms:
+          type: boolean
+    NotificationStatus:
+      enum:
+      - pending
+      - sent
+      - failed
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `sent` - Sent
+        * `failed` - Failed
+    NullEnum:
+      enum:
+      - null
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        order_number:
+          type: string
+          maxLength: 50
+        customer:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        payment_status:
+          $ref: '#/components/schemas/PaymentStatus'
+        subtotal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        shipping_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        tax_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        customer_notes:
+          type: string
+        admin_notes:
+          type: string
+        placed_at:
+          type: string
+          format: date-time
+          nullable: true
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        shipped_at:
+          type: string
+          format: date-time
+          nullable: true
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancellation_reason:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+        status_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderStatusHistory'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - customer
+      - id
+      - items
+      - order_number
+      - status_history
+      - subtotal
+      - total_amount
+      - updated_at
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        variant:
+          type: string
+          format: uuid
+        product_name:
+          type: string
+          maxLength: 255
+        variant_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          maxLength: 100
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        line_total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - line_total
+      - product
+      - product_name
+      - quantity
+      - sku
+      - unit_price
+      - variant
+      - variant_name
+    OrderStatus:
+      enum:
+      - pending_payment
+      - placed
+      - processing
+      - shipped
+      - delivered
+      - cancelled
+      type: string
+      description: |-
+        * `pending_payment` - Pending payment
+        * `placed` - Placed
+        * `processing` - Processing
+        * `shipped` - Shipped
+        * `delivered` - Delivered
+        * `cancelled` - Cancelled
+    OrderStatusHistory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        from_status:
+          type: string
+          nullable: true
+          maxLength: 30
+        to_status:
+          type: string
+          maxLength: 30
+        changed_by:
+          type: string
+          format: uuid
+          nullable: true
+        reason:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - to_status
+    PaginatedAdminCategoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminCategory'
+    PaginatedAdminProductImageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminProductImage'
+    PaginatedAdminProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminProduct'
+    PaginatedAdminVariantAttributeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminVariantAttribute'
+    PaginatedAdminVariantAttributeValueList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminVariantAttributeValue'
+    PaginatedAdminVariantList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminVariant'
+    PaginatedCategoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+    PaginatedProductListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductList'
+    PasswordReset:
+      type: object
+      properties:
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 8
+      required:
+      - new_password
+    PatchedAddressUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 32
+        line1:
+          type: string
+          maxLength: 255
+        line2:
+          type: string
+          maxLength: 255
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 100
+        postal_code:
+          type: string
+          maxLength: 32
+        country:
+          type: string
+          maxLength: 100
+        is_default:
+          type: boolean
+    PatchedAdminCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+        parent:
+          type: string
+          format: uuid
+          nullable: true
+        image:
+          type: string
+          format: uri
+          maxLength: 200
+        is_active:
+          type: boolean
+        sort_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedAdminProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        category:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+        base_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        status:
+          $ref: '#/components/schemas/ProductStatus'
+        is_featured:
+          type: boolean
+        created_by:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedAdminProductImage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        image:
+          type: string
+          format: uri
+          maxLength: 200
+        alt_text:
+          type: string
+          maxLength: 255
+        sort_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        is_primary:
+          type: boolean
+    PatchedAdminTrackingUpdate:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/AdminTrackingUpdateStatusEnum'
+        tracking_url:
+          type: string
+          format: uri
+    PatchedAdminUserUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        profile_picture:
+          type: string
+        is_active:
+          type: boolean
+        is_email_verified:
+          type: boolean
+    PatchedAdminVariant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        sku:
+          type: string
+          maxLength: 100
+        name:
+          type: string
+          maxLength: 255
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        stock_quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        status:
+          $ref: '#/components/schemas/VariantStatus'
+        image:
+          type: string
+          format: uri
+          maxLength: 200
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedAdminVariantAttribute:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        slug:
+          type: string
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+    PatchedAdminVariantAttributeValue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        attribute:
+          type: string
+          format: uuid
+        value:
+          type: string
+          maxLength: 100
+        slug:
+          type: string
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+    PatchedCouponCreate:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+        discount_type:
+          $ref: '#/components/schemas/DiscountTypeEnum'
+        discount_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        min_order_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        max_discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+        max_usage_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          nullable: true
+        per_customer_limit:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        valid_from:
+          type: string
+          format: date-time
+        valid_until:
+          type: string
+          format: date-time
+          nullable: true
+        is_active:
+          type: boolean
+    PatchedNotificationPreference:
+      type: object
+      properties:
+        order_updates_email:
+          type: boolean
+        order_updates_sms:
+          type: boolean
+        promotions_email:
+          type: boolean
+        promotions_sms:
+          type: boolean
+    PatchedProfileImage:
+      type: object
+      properties:
+        profile_picture:
+          type: string
+    PatchedProfileUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        profile_picture:
+          type: string
+    PatchedReview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        customer:
+          type: string
+          format: uuid
+          readOnly: true
+        order_item:
+          type: string
+          format: uuid
+        rating:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        title:
+          type: string
+          maxLength: 255
+        content:
+          type: string
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ReviewStatus'
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewImage'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedStaffPermissionUpdate:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+    PatchedStaffUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        profile_picture:
+          type: string
+        is_active:
+          type: boolean
+    PatchedUpdateCartItem:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          minimum: 1
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        order:
+          type: string
+          format: uuid
+        provider:
+          $ref: '#/components/schemas/ProviderEnum'
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        status:
+          $ref: '#/components/schemas/TransactionState'
+        failure_reason:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - amount
+      - created_at
+      - id
+      - order
+    PaymentStatus:
+      enum:
+      - pending
+      - paid
+      - failed
+      - partially_refunded
+      - refunded
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `paid` - Paid
+        * `failed` - Failed
+        * `partially_refunded` - Partially refunded
+        * `refunded` - Refunded
+    PermissionsEnum:
+      enum:
+      - products.view
+      - products.create
+      - products.update
+      - orders.view
+      - orders.update_status
+      - returns.view
+      - support.view_customers
+      - inventory.view
+      type: string
+      description: |-
+        * `products.view` - View products
+        * `products.create` - Create products
+        * `products.update` - Update products
+        * `orders.view` - View orders
+        * `orders.update_status` - Update order status
+        * `returns.view` - View returns
+        * `support.view_customers` - View customers
+        * `inventory.view` - View inventory
+    PhoneVerificationCode:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 6
+          minLength: 6
+      required:
+      - code
+    ProductBrief:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        base_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+      required:
+      - base_price
+      - id
+      - name
+      - slug
+    ProductDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/Category'
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+        base_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductImage'
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant'
+        is_featured:
+          type: boolean
+      required:
+      - base_price
+      - category
+      - description
+      - id
+      - images
+      - name
+      - slug
+      - variants
+    ProductImage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          maxLength: 200
+        alt_text:
+          type: string
+          maxLength: 255
+        is_primary:
+          type: boolean
+      required:
+      - id
+      - image
+    ProductList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        category:
+          type: string
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        base_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        primary_image:
+          type: string
+          nullable: true
+          readOnly: true
+        is_featured:
+          type: boolean
+      required:
+      - base_price
+      - category
+      - id
+      - name
+      - primary_image
+      - slug
+    ProductStatus:
+      enum:
+      - draft
+      - active
+      - inactive
+      - archived
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `active` - Active
+        * `inactive` - Inactive
+        * `archived` - Archived
+    ProviderEnum:
+      enum:
+      - stripe
+      type: string
+      description: '* `stripe` - Stripe'
+    PublicReview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        customer:
+          type: string
+          format: uuid
+        rating:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        title:
+          type: string
+          maxLength: 255
+        content:
+          type: string
+        helpful_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        unhelpful_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicReviewImage'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - customer
+      - id
+      - images
+      - product
+      - rating
+      - title
+    PublicReviewImage:
+      type: object
+      properties:
+        image:
+          type: string
+          maxLength: 500
+      required:
+      - image
+    Refresh:
+      type: object
+      properties:
+        refresh:
+          type: string
+      required:
+      - refresh
+    Register:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+      required:
+      - email
+      - password
+    RequestPhoneChange:
+      type: object
+      properties:
+        new_phone:
+          type: string
+      required:
+      - new_phone
+    ResetPassword:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        code:
+          type: string
+          maxLength: 6
+          minLength: 6
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 8
+      required:
+      - code
+      - email
+      - new_password
+    ReturnImage:
+      type: object
+      properties:
+        image:
+          type: string
+          maxLength: 500
+      required:
+      - image
+    ReturnItem:
+      type: object
+      properties:
+        order_item:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        reason:
+          $ref: '#/components/schemas/ReturnReason'
+        condition_notes:
+          type: string
+      required:
+      - order_item
+      - quantity
+      - reason
+    ReturnReason:
+      enum:
+      - damaged
+      - wrong_item
+      - missing_item
+      - defective
+      - other
+      type: string
+      description: |-
+        * `damaged` - Damaged
+        * `wrong_item` - Wrong item
+        * `missing_item` - Missing item
+        * `defective` - Defective
+        * `other` - Other
+    ReturnRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        return_number:
+          type: string
+          maxLength: 50
+        order:
+          type: string
+          format: uuid
+        customer:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/ReturnStatus'
+        reason:
+          $ref: '#/components/schemas/ReturnReason'
+        resolution:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/ReturnResolution'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        comments:
+          type: string
+        admin_notes:
+          type: string
+        rejection_reason:
+          type: string
+        refund_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReturnItem'
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReturnImage'
+          readOnly: true
+        status_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReturnStatusHistory'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - customer
+      - id
+      - images
+      - items
+      - order
+      - reason
+      - return_number
+      - status_history
+      - updated_at
+    ReturnResolution:
+      enum:
+      - refund
+      - replacement
+      - store_credit
+      type: string
+      description: |-
+        * `refund` - Refund
+        * `replacement` - Replacement
+        * `store_credit` - Store credit
+    ReturnStatus:
+      enum:
+      - pending_review
+      - approved
+      - rejected
+      - awaiting_return
+      - in_transit
+      - received
+      - processed
+      - refunded
+      - replaced
+      - completed
+      type: string
+      description: |-
+        * `pending_review` - Pending review
+        * `approved` - Approved
+        * `rejected` - Rejected
+        * `awaiting_return` - Awaiting return
+        * `in_transit` - In transit
+        * `received` - Received
+        * `processed` - Processed
+        * `refunded` - Refunded
+        * `replaced` - Replaced
+        * `completed` - Completed
+    ReturnStatusHistory:
+      type: object
+      properties:
+        from_status:
+          type: string
+          nullable: true
+          maxLength: 30
+        to_status:
+          type: string
+          maxLength: 30
+        reason:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - to_status
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        customer:
+          type: string
+          format: uuid
+          readOnly: true
+        order_item:
+          type: string
+          format: uuid
+        rating:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        title:
+          type: string
+          maxLength: 255
+        content:
+          type: string
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ReviewStatus'
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewImage'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - customer
+      - id
+      - images
+      - order_item
+      - product
+      - rating
+      - status
+      - title
+      - updated_at
+    ReviewImage:
+      type: object
+      properties:
+        image:
+          type: string
+          maxLength: 500
+      required:
+      - image
+    ReviewStatus:
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `approved` - Approved
+        * `rejected` - Rejected
+    RoleEnum:
+      enum:
+      - admin
+      - staff
+      - customer
+      type: string
+      description: |-
+        * `admin` - Admin
+        * `staff` - Staff
+        * `customer` - Customer
+    SetRole:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+      required:
+      - role
+    ShippingMethod:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        base_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        price_per_kg:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        estimated_min_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        estimated_max_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - base_price
+      - code
+      - id
+      - name
+    StaffCreate:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        profile_picture:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionsEnum'
+      required:
+      - email
+      - password
+    StockAdjustment:
+      type: object
+      properties:
+        variant_id:
+          type: string
+          format: uuid
+        quantity_changed:
+          type: integer
+          description: Positive to add stock, negative to reduce stock.
+        notes:
+          type: string
+          default: ''
+      required:
+      - quantity_changed
+      - variant_id
+    StockReservation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        variant:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        order:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        quantity:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StockReservationStatus'
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - expires_at
+      - id
+      - order
+      - quantity
+      - status
+      - updated_at
+      - user
+      - variant
+    StockReservationStatus:
+      enum:
+      - active
+      - consumed
+      - released
+      - expired
+      type: string
+      description: |-
+        * `active` - Active
+        * `consumed` - Consumed
+        * `released` - Released
+        * `expired` - Expired
+    StripeWebhook:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        data: {}
+        created:
+          type: integer
+        livemode:
+          type: boolean
+          default: false
+        pending_webhooks:
+          type: integer
+        request: {}
+        api_version:
+          type: string
+        account:
+          type: string
+      required:
+      - data
+      - id
+      - type
+    TransactionState:
+      enum:
+      - pending
+      - succeeded
+      - failed
+      - cancelled
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `succeeded` - Succeeded
+        * `failed` - Failed
+        * `cancelled` - Cancelled
+    TransactionTypeEnum:
+      enum:
+      - order_placed
+      - cancellation
+      - return_received
+      - refund
+      - manual_adjustment
+      - correction
+      type: string
+      description: |-
+        * `order_placed` - Order placed
+        * `cancellation` - Cancellation
+        * `return_received` - Return received
+        * `refund` - Refund
+        * `manual_adjustment` - Manual adjustment
+        * `correction` - Correction
+    Variant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        sku:
+          type: string
+          maxLength: 100
+        name:
+          type: string
+          maxLength: 255
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        stock_quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        image:
+          type: string
+          format: uri
+          maxLength: 200
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariantOption'
+          readOnly: true
+      required:
+      - id
+      - name
+      - options
+      - price
+      - sku
+    VariantBrief:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          maxLength: 100
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+      required:
+      - id
+      - name
+      - price
+      - sku
+    VariantOption:
+      type: object
+      properties:
+        attribute:
+          type: string
+        value:
+          type: string
+      required:
+      - attribute
+      - value
+    VariantStatus:
+      enum:
+      - active
+      - inactive
+      type: string
+      description: |-
+        * `active` - Active
+        * `inactive` - Inactive
+    VariantStockSummary:
+      type: object
+      properties:
+        variant_id:
+          type: string
+          format: uuid
+        sku:
+          type: string
+        physical_stock:
+          type: integer
+        active_reservations:
+          type: integer
+        net_available:
+          type: integer
+      required:
+      - active_reservations
+      - net_available
+      - physical_stock
+      - sku
+      - variant_id
+    VerifyEmail:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 6
+          minLength: 6
+      required:
+      - code
+    WishlistItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          allOf:
+          - $ref: '#/components/schemas/ProductBrief'
+          readOnly: true
+        variant:
+          allOf:
+          - $ref: '#/components/schemas/VariantBrief'
+          readOnly: true
+        notes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - product
+      - variant
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

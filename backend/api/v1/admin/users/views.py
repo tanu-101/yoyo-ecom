@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from django.core.exceptions import ValidationError as DjangoValidationError
-from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -56,7 +55,8 @@ class AdminUserListCreateView(APIView):
     permission_classes = [IsAdmin]
 
     @extend_schema(
-        responses=OpenApiTypes.OBJECT,
+        operation_id="v1_admin_users_list",
+        responses=dict,
         examples=[
             OpenApiExample(
                 "Admin user list response",
@@ -96,7 +96,7 @@ class AdminUserListCreateView(APIView):
 
     @extend_schema(
         request=AdminUserCreateSerializer,
-        responses=OpenApiTypes.OBJECT,
+        responses=dict,
         examples=[
             OpenApiExample(
                 "Admin user create request",
@@ -151,7 +151,7 @@ class AdminUserDetailView(APIView):
     permission_classes = [IsAdmin]
 
     @extend_schema(
-        responses=OpenApiTypes.OBJECT,
+        responses=dict,
         examples=[
             OpenApiExample(
                 "Admin user detail response",
@@ -183,7 +183,7 @@ class AdminUserDetailView(APIView):
 
     @extend_schema(
         request=AdminUserUpdateSerializer,
-        responses=OpenApiTypes.OBJECT,
+        responses=dict,
         examples=[
             OpenApiExample(
                 "Admin user update request",
@@ -234,7 +234,8 @@ class AdminUserActionView(APIView):
     action = ""
 
     @extend_schema(
-        responses=OpenApiTypes.OBJECT,
+        request=None,
+        responses=dict,
         examples=[
             OpenApiExample(
                 "Admin user action response",
@@ -281,7 +282,7 @@ class AdminResetPasswordView(APIView):
 
     @extend_schema(
         request=PasswordResetSerializer,
-        responses=OpenApiTypes.OBJECT,
+        responses=dict,
         examples=[
             OpenApiExample(
                 "Admin reset password request",
@@ -317,7 +318,7 @@ class AdminSetRoleView(APIView):
 
     @extend_schema(
         request=SetRoleSerializer,
-        responses=OpenApiTypes.OBJECT,
+        responses=dict,
         examples=[
             OpenApiExample(
                 "Admin set role request",

@@ -26,6 +26,7 @@ class StaffListCreateView(APIView):
     permission_classes = [IsAdmin]
 
     @extend_schema(
+        operation_id="v1_admin_staff_list",
         responses=OpenApiTypes.OBJECT,
         examples=[
             OpenApiExample(

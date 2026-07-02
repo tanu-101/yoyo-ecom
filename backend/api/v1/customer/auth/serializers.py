@@ -47,4 +47,18 @@ class UserSummarySerializer(serializers.Serializer):
     phone = serializers.CharField()
     profile_picture = serializers.CharField(allow_blank=True)
     is_email_verified = serializers.BooleanField()
+    is_phone_verified = serializers.BooleanField()
     permissions = serializers.ListField(child=serializers.CharField())
+
+
+class PhoneVerificationCodeSerializer(serializers.Serializer):
+    code = serializers.CharField(min_length=6, max_length=6)
+
+
+class RequestPhoneChangeSerializer(serializers.Serializer):
+    new_phone = serializers.CharField()
+
+
+class ConfirmPhoneChangeSerializer(serializers.Serializer):
+    code = serializers.CharField(min_length=6, max_length=6)
+    new_phone = serializers.CharField()

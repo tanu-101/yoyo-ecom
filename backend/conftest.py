@@ -12,6 +12,13 @@ from apps.accounts.factories import (
 
 
 @pytest.fixture
+def user_factory():
+    from apps.accounts.factories import UserFactory
+
+    return UserFactory
+
+
+@pytest.fixture
 def api_client():
     from rest_framework.test import APIClient
 

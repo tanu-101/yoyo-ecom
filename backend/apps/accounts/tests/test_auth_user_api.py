@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from unittest.mock import patch
+
 import pytest
 from django.core import mail
 
 from apps.accounts.constants import StaffPermissionCode, UserRole
-from apps.accounts.models import Address, StaffPermission, User
+from apps.accounts.models import Address, StaffPermission, User, UserOTP
 from apps.accounts.tests.helpers import create_user, extract_otp_code
 
 pytestmark = pytest.mark.django_db
@@ -218,3 +220,68 @@ def test_admin_creates_staff_and_updates_permissions(api_client):
         ).is_enabled
         is True
     )
+
+
+def test_phone_verification_flow(api_client):
+    user = create_user(email="phone-verify@example.com")
+    api_client.force_authenticate(user=user)
+
+    with patch(
+        "apps.accounts.services.phone_verification.send_sms",
+        return_value=True,
+    ):
+        response = api_client.post("/api/v1/customer/auth/request-phone-verification/")
+
+    assert response.status_code == 200
+    assert response.data["message"] == "Verification code sent to your phone."
+
+    otp = UserOTP.objects.get(user=user, purpose=UserOTP.Purpose.PHONE_VERIFICATION)
+    from apps.accounts.services.authentication import _hash_code
+
+    otp.code_hash = _hash_code("654321")
+    otp.save(update_fields=["code_hash"])
+
+    response = api_client.post(
+        "/api/v1/customer/auth/verify-phone/",
+        {"code": "654321"},
+        format="json",
+    )
+
+    assert response.status_code == 200
+    assert response.data["data"]["is_phone_verified"] is True
+    user.refresh_from_db()
+    assert user.is_phone_verified is True
+
+
+def test_phone_change_flow(api_client):
+    user = create_user(email="phone-change@example.com")
+    api_client.force_authenticate(user=user)
+
+    with patch(
+        "apps.accounts.services.phone_verification.send_sms",
+        return_value=True,
+    ):
+        response = api_client.post(
+            "/api/v1/customer/auth/request-phone-change/",
+            {"new_phone": "+8801711111111"},
+            format="json",
+        )
+
+    assert response.status_code == 200
+
+    otp = UserOTP.objects.get(user=user, purpose=UserOTP.Purpose.PHONE_CHANGE)
+    from apps.accounts.services.authentication import _hash_code
+
+    otp.code_hash = _hash_code("123456")
+    otp.save(update_fields=["code_hash"])
+
+    response = api_client.post(
+        "/api/v1/customer/auth/confirm-phone-change/",
+        {"code": "123456", "new_phone": "+8801711111111"},
+        format="json",
+    )
+
+    assert response.status_code == 200
+    user.refresh_from_db()
+    assert user.phone == "+8801711111111"
+    assert user.is_phone_verified is True
