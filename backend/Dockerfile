@@ -9,11 +9,12 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends build-essential libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY backend/pyproject.toml /app/pyproject.toml
-RUN pip install --no-cache-dir -e ".[dev]"
+COPY requirements.txt pyproject.toml /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend /app
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+ENTRYPOINT ["/app/entrypoint.sh"]
