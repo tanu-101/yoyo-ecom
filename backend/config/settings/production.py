@@ -9,8 +9,15 @@ DEBUG = False
 
 ALLOWED_HOSTS = cast(list[str], config("ALLOWED_HOSTS", default=".railway.app", cast=Csv()))  # noqa: F405
 
+db_url = config("DATABASE_URL", default="")
+if not db_url:
+    raise ValueError(
+        "DATABASE_URL not set. Either set it in Railway Variables, "
+        "or add a PostgreSQL service to auto-inject it."
+    )
+
 DATABASES["default"] = dj_database_url.config(  # type: ignore[assignment]  # noqa: F405
-    default=config("DATABASE_URL"),
+    default=db_url,
     conn_max_age=600,
     conn_health_checks=True,
 )
