@@ -7,7 +7,7 @@ from .base import *  # noqa: F403
 
 DEBUG = False
 
-ALLOWED_HOSTS = cast(list[str], config("ALLOWED_HOSTS", cast=Csv()))  # noqa: F405
+ALLOWED_HOSTS = cast(list[str], config("ALLOWED_HOSTS", default=".railway.app", cast=Csv()))  # noqa: F405
 
 DATABASES["default"] = dj_database_url.config(  # type: ignore[assignment]  # noqa: F405
     default=config("DATABASE_URL"),
