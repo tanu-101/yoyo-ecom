@@ -5,7 +5,7 @@ from decouple import Csv, config
 from .base import *  # noqa: F403
 
 DEBUG = False
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY", default="3485789uioret894khf8448y98y")
 
 ALLOWED_HOSTS = cast(
     list[str], config("ALLOWED_HOSTS", default=".railway.app", cast=Csv())

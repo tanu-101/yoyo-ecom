@@ -18,7 +18,7 @@ def env_bool(name: str, *, default: bool = False) -> bool:
     return default
 
 
-SECRET_KEY = config("SECRET_KEY", default="unsafe-local-secret")
+SECRET_KEY = config("SECRET_KEY", default="3485789uioret894khf8448y98y")
 DEBUG = env_bool("DEBUG", default=False)
 ALLOWED_HOSTS: list[str] = cast(
     list[str],
