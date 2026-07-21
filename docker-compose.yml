@@ -14,17 +14,19 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - sqlite_data:/app/db.sqlite3
 
-  postgres:
-    image: postgres:16-alpine
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     environment:
-      POSTGRES_DB: ecommerce
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - "3000:3000"
+    depends_on:
+      - backend
 
 volumes:
-  postgres_data:
+  sqlite_data:

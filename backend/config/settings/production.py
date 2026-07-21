@@ -1,26 +1,21 @@
 from typing import cast
 
-import dj_database_url
 from decouple import Csv, config
 
 from .base import *  # noqa: F403
 
 DEBUG = False
 
-ALLOWED_HOSTS = cast(list[str], config("ALLOWED_HOSTS", default=".railway.app", cast=Csv()))  # noqa: F405
+ALLOWED_HOSTS = cast(
+    list[str], config("ALLOWED_HOSTS", default=".railway.app", cast=Csv())
+)  # noqa: F405
 
-db_url = config("DATABASE_URL", default="")
-if not db_url:
-    raise ValueError(
-        "DATABASE_URL not set. Either set it in Railway Variables, "
-        "or add a PostgreSQL service to auto-inject it."
-    )
-
-DATABASES["default"] = dj_database_url.config(  # type: ignore[assignment]  # noqa: F405
-    default=db_url,
-    conn_max_age=600,
-    conn_health_checks=True,
-)
+DATABASES = {  # noqa: F405
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",  # noqa: F405
+    }
+}
 
 # Security
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

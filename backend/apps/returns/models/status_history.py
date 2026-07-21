@@ -12,9 +12,7 @@ class ReturnStatusHistory(UUIDModel):
         on_delete=models.CASCADE,
         related_name="status_history",
     )
-    from_status: models.CharField = models.CharField(
-        max_length=30, null=True, blank=True
-    )  # noqa: DJ001
+    from_status: models.CharField = models.CharField(max_length=30, blank=True, default="")
     to_status: models.CharField = models.CharField(max_length=30)
     changed_by: models.ForeignKey = models.ForeignKey(
         settings.AUTH_USER_MODEL,
